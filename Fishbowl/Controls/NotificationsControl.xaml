@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="FacebookClient.NotificationsControl" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:FacebookClient="clr-namespace:FacebookClient"
+    xmlns:ClientManager="clr-namespace:ClientManager;assembly=ClientManager" 
+    xmlns:Facebook="clr-namespace:Contigo;assembly=Contigo"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    MinWidth="250" MaxWidth="350">
+  <UserControl.Resources>
+    <!-- Can't do this directly in the Setter because of a bug in WPF. -->
+    <TextBlock x:Key="DescriptionToolTip" Text="{Binding DescriptionText}" TextWrapping="Wrap" MaxWidth="350" />
+  </UserControl.Resources>
+  <UserControl.Template>
+    <ControlTemplate TargetType="{x:Type FacebookClient:NotificationsControl}">
+      <Border Background="{DynamicResource ApplicationBarBackground}" Padding="1" BorderThickness="1" BorderBrush="LightGray">
+        <Grid>
+          <StackPanel>
+            <DockPanel>
+              <Button DockPanel.Dock="Right" Margin="5" Content="0" Style="{StaticResource SimpleButtonStyle}" FontFamily="Webdings" Foreground="White" Command="{x:Static FacebookClient:NotificationsControl.CloseCommand}" ToolTip="Hide notifications" />
+              <TextBlock Text="Notifications" Foreground="White" FontWeight="Bold" Margin="5" />
+            </DockPanel>
+            <StackPanel x:Name="ItemsPanel">
+              <ItemsControl x:Name="NotificationList" Background="White" Padding="5" ItemsSource="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=Notifications}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate DataType="{x:Type Facebook:Notification}">
+                    <DockPanel Margin="0,0,0,5">
+                      <Rectangle DockPanel.Dock="Top" Height="1" SnapsToDevicePixels="True" Width="240" VerticalAlignment="Top" HorizontalAlignment="Center">
+                        <Rectangle.Fill>
+                          <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Offset="0" Color="Transparent" />
+                            <GradientStop Offset=".05" Color="#d9e2f8" />
+                            <GradientStop Offset=".9" Color="#d9e2f8" />
+                            <GradientStop Offset="1" Color="Transparent" />
+                          </LinearGradientBrush>
+                        </Rectangle.Fill>
+                      </Rectangle>
+
+                      <Button DockPanel.Dock="Right" 
+                              Content="r"
+                              Foreground="{DynamicResource FacebookBlueBrush}" 
+                              FontFamily="Webdings" 
+                              Style="{StaticResource SimpleButtonStyle}" 
+                              VerticalAlignment="Top" 
+                              Command="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=ActionCommands.MarkAsReadCommand}" 
+                              CommandParameter="{Binding}" 
+                              Margin="10,0,2,0"
+                              ToolTip="Mark as read"
+                              FontWeight="Bold" />
+                      
+                      <TextBlock TextWrapping="Wrap">
+                        <TextBlock.Style>
+                          <Style TargetType="{x:Type TextBlock}">
+                            <!-- We want the tooltip to not be present if there's no content. -->
+                            <Setter Property="ToolTip" Value="{StaticResource DescriptionToolTip}"/>
+                            <Style.Triggers>
+                              <DataTrigger Binding="{Binding DescriptionText}" Value="">
+                                <Setter Property="ToolTip" Value="{x:Null}" />
+                              </DataTrigger>
+                            </Style.Triggers>
+                          </Style> 
+                        </TextBlock.Style>
+                        <FacebookClient:HyperlinkTextContent Text="{Binding Title}" RequestNavigate="_OnNotificationRequestNavigate" />
+                        <TextBlock VerticalAlignment="Center" TextWrapping="Wrap" Text="{Binding Updated, Converter={StaticResource DateTimeConverter}}">
+                          <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource CreatedTextBlockStyle}">
+                              <Setter Property="Visibility" Value="Visible"/>
+                              <Style.Triggers>
+                                <DataTrigger Binding="{Binding Updated}" Value="{x:Static sys:DateTime.MinValue}">
+                                  <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                              </Style.Triggers>
+                            </Style>
+                          </TextBlock.Style>
+                        </TextBlock>
+                      </TextBlock>
+                    </DockPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+              <Button Content="Mark all as read"
+                  Margin="5"
+                  FontFamily="{StaticResource SerifFont}"
+                  Foreground="White"
+                  HorizontalAlignment="Left" 
+                  Style="{StaticResource SimpleButtonStyle}" 
+                  Command="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=ActionCommands.MarkAllAsReadCommand}" 
+                  CommandParameter="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=Notifications}"/>
+            </StackPanel>
+            <TextBlock x:Name="NoText" Margin="10, 2" Text="No new notifications..." Foreground="White" FontFamily="{StaticResource SerifFont}" HorizontalAlignment="Left" Visibility="Collapsed" />
+          </StackPanel>
+        </Grid>
+      </Border>
+      <ControlTemplate.Triggers>
+        <Trigger Property="IsDisplayed" Value="False">
+          <Setter Property="Visibility" Value="Collapsed" />
+        </Trigger>
+        <DataTrigger Binding="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=Notifications.Count}" Value="0">
+          <Setter TargetName="ItemsPanel" Property="Visibility" Value="Collapsed" />
+          <Setter TargetName="NoText" Property="Visibility" Value="Visible" />
+        </DataTrigger>
+      </ControlTemplate.Triggers>
+    </ControlTemplate>
+  </UserControl.Template>
+</UserControl>

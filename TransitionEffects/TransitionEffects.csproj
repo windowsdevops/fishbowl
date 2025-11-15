@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C044C5A8-5694-4311-AB9B-FE1E122AEFE2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TransitionEffects</RootNamespace>
+    <AssemblyName>TransitionEffects</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>false</SignAssembly>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CloudyTransitionEffect.cs" />
+    <Compile Include="CircleRevealTransitionEffect.cs" />
+    <Compile Include="BlindsTransitionEffect.cs" />
+    <Compile Include="CloudRevealTransitionEffect.cs" />
+    <Compile Include="BloodTransitionEffect.cs" />
+    <Compile Include="CircleStretchTransitionEffect.cs" />
+    <Compile Include="CircularBlurTransitionEffect.cs" />
+    <Compile Include="BandedSwirlTransitionEffect.cs" />
+    <Compile Include="PixelateTransitionEffect.cs" />
+    <Compile Include="WaveTransitionEffect.cs" />
+    <Compile Include="SmoothSwirlGridTransitionEffect.cs" />
+    <Compile Include="SwirlGridTransitionEffect.cs" />
+    <Compile Include="PixelateInTransitionEffect.cs" />
+    <Compile Include="PixelateOutTransitionEffect.cs" />
+    <Compile Include="LeastBrightTransitionEffect.cs" />
+    <Compile Include="SaturateTransitionEffect.cs" />
+    <Compile Include="ShrinkTransitionEffect.cs" />
+    <Compile Include="MostBrightTransitionEffect.cs" />
+    <Compile Include="SwirlTransitionEffect.cs" />
+    <Compile Include="DissolveTransitionEffect.cs" />
+    <Compile Include="RadialBlurTransitionEffect.cs" />
+    <Compile Include="RadialWiggleTransitionEffect.cs" />
+    <Compile Include="RippleTransitionEffect.cs" />
+    <Compile Include="LineRevealTransitionEffect.cs" />
+    <Compile Include="RotateCrumbleTransitionEffect.cs" />
+    <Compile Include="CrumbleTransitionEffect.cs" />
+    <Compile Include="WaterTransitionEffect.cs" />
+    <Compile Include="RandomCircleRevealTransitionEffect.cs" />
+    <Compile Include="FadeTransitionEffect.cs" />
+    <Compile Include="SlideInTransitionEffect.cs" />
+    <Compile Include="DropFadeTransitionEffect.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomizedTransitionEffect.cs" />
+    <Compile Include="TransitionEffect.cs" />
+    <Compile Include="TransitionUtilities.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\clouds.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shaders\CircleReveal.fx" />
+    <Resource Include="Shaders\CircleReveal.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\Blinds.fx" />
+    <Resource Include="Shaders\Blinds.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\CloudReveal.fx" />
+    <Resource Include="Shaders\CloudReveal.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\Blood.fx" />
+    <Resource Include="Shaders\Blood.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\CircleStretch.fx" />
+    <Resource Include="Shaders\CircleStretch.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Shaders\RotateCrumble.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Shaders\Ripple.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Shaders\CircularBlur.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\CircularBlur.fx" />
+    <Resource Include="Shaders\Disolve.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\BandedSwirl.fx" />
+    <Resource Include="Shaders\BandedSwirl.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\Pixelate.fx" />
+    <Resource Include="Shaders\Pixelate.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\Wave.fx" />
+    <Resource Include="Shaders\Wave.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\SmoothSwirlGrid.fx" />
+    <Resource Include="Shaders\SmoothSwirlGrid.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\SwirlGrid.fx" />
+    <Resource Include="Shaders\SwirlGrid.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\PixelateIn.fx" />
+    <Resource Include="Shaders\PixelateIn.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\PixelateOut.fx" />
+    <Resource Include="Shaders\PixelateOut.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\Shrink.fx" />
+    <Resource Include="Shaders\Shrink.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\Saturate.fx" />
+    <Resource Include="Shaders\Saturate.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\LeastBright.fx" />
+    <Resource Include="Shaders\LeastBright.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\MostBright.fx" />
+    <Resource Include="Shaders\MostBright.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\Swirl.fx" />
+    <Resource Include="Shaders\Swirl.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\Disolve.fx" />
+    <None Include="Shaders\RadialBlur.fx" />
+    <Resource Include="Shaders\RadialBlur.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\RadialWiggle.fx" />
+    <Resource Include="Shaders\RadialWiggle.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\Ripple.fx" />
+    <None Include="Shaders\RotateCrumble.fx" />
+    <None Include="Shaders\LineReveal.fx" />
+    <Resource Include="Shaders\LineReveal.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\Crumble.fx" />
+    <Resource Include="Shaders\Crumble.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\Water.fx" />
+    <Resource Include="Shaders\Water.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\RandomCircleReveal.fx" />
+    <Resource Include="Shaders\RandomCircleReveal.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\Fade.fx" />
+    <Resource Include="Shaders\Fade.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\SlideIn.fx" />
+    <None Include="Shaders\DropFade.fx" />
+    <Resource Include="Shaders\DropFade.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <None Include="Shaders\CompileAllShaders.cmd" />
+    <Resource Include="Shaders\SlideIn.fx.ps">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\noise.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+</Project>

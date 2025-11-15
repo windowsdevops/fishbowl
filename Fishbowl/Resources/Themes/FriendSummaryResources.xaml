@@ -1,0 +1,196 @@
+<ClientManagerView:EventResourceDictionary x:Class="FacebookClient.FriendSummaryEventResourceDictionary"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ClientManagerControls="clr-namespace:ClientManager.Controls;assembly=ClientManager"
+    xmlns:FacebookClient="clr-namespace:FacebookClient"
+    xmlns:Facebook="clr-namespace:Contigo;assembly=Contigo"
+    xmlns:ClientManager="clr-namespace:ClientManager;assembly=ClientManager"
+    xmlns:ClientManagerData="clr-namespace:ClientManager.Data;assembly=ClientManager"
+    xmlns:ClientManagerView="clr-namespace:ClientManager.View;assembly=ClientManager"
+    xmlns:Annotations="clr-namespace:System.Windows.Annotations;assembly=PresentationFramework">
+
+  <FacebookClient:ContentVisibilityConverter x:Key="ContentVisibilityConverter" />
+  <FacebookClient:DateTimeToStringConverter x:Key="DateTimeConverter" />
+  <FacebookClient:CityStateConverter x:Key="CityStateConverter" />
+
+  <DataTemplate x:Key="FriendSummaryItemTemplate">
+    <Grid>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Button x:Name="ActivityButton" 
+          Style="{StaticResource AnimatedItemButton}" 
+          Click="OnNavigateToContentButtonClicked" 
+          ClientManagerView:ViewManager.NavigationContent="{Binding}" 
+          IsEnabled="{Binding HasData, FallbackValue=False}" 
+          RenderTransformOrigin="0.5,0.5"
+          VerticalAlignment="Top">
+        <Button.RenderTransform>
+            <TransformGroup>
+                <RotateTransform Angle="-6" />
+            </TransformGroup>
+        </Button.RenderTransform>
+        <Grid Width="106" Height="106">
+          <Grid>
+            <Image Name="Placeholder" Source="pack://application:,,,/Resources/Images/avatar_background.png" />
+            <ClientManagerControls:FacebookImageControl FacebookImage="{Binding Image}" FacebookImageDimensions="Normal">
+              <ClientManagerControls:FacebookImageControl.Template>
+                <ControlTemplate TargetType="{x:Type ClientManagerControls:FacebookImageControl}">
+                  <Border Margin="4,4,4.5,6">
+                    <Image Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ImageSource}" Stretch="UniformToFill" />
+                  </Border>
+                </ControlTemplate>
+              </ClientManagerControls:FacebookImageControl.Template>
+            </ClientManagerControls:FacebookImageControl>
+          </Grid>
+
+          <!--<Image Width="19" Height="27" Source="pack://application:,,,/Resources/Images/thumbtack.png" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,-9,-40,0" />-->
+        </Grid>
+      </Button>
+
+      <DockPanel Grid.Column="1" Margin="15,-5,5,10" VerticalAlignment="Top">
+        <TextBlock DockPanel.Dock="Top" Style="{StaticResource ProfileNameTextBlockStyle}" TextWrapping="Wrap" TextTrimming="WordEllipsis">
+          <Hyperlink Click="OnNavigateToContentButtonClicked" ClientManagerView:ViewManager.NavigationContent="{Binding}" IsEnabled="{Binding HasData, FallbackValue=False}">
+            <FacebookClient:BindableRun Text="{Binding Name}" />
+          </Hyperlink>
+          <InlineUIContainer>
+            <Grid Width="14" Height="14" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
+              <Image Name="Away" Source="pack://application:,,,/Resources/Images/status_away.png" Width="14" Height="14" Visibility="Collapsed" />
+              <Image Name="Online" Source="pack://application:,,,/Resources/Images/status_online.png" Width="14" Height="14" Visibility="Collapsed" />
+            </Grid> 
+          </InlineUIContainer>
+        </TextBlock>
+        
+        <!-- Show current location, unless the sort order is by Birthdays -->
+        <TextBlock DockPanel.Dock="Top"
+            Margin="0,1,0,0" 
+            Text="{Binding Converter={StaticResource CityStateConverter}}">
+          <TextBlock.Style>
+            <Style BasedOn="{StaticResource MessageTextBlockStyle}" TargetType="{x:Type TextBlock}">
+              <Setter Property="Visibility" Value="Visible" />
+              <Style.Triggers>
+               <DataTrigger Binding="{Binding Converter={StaticResource CityStateConverter}}" Value="">
+                 <Setter Property="Visibility" Value="Collapsed" />
+               </DataTrigger>
+               <DataTrigger Binding="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=ActiveContactSortOrder}" Value="AscendingByBirthday">
+                 <Setter Property="Visibility" Value="Collapsed" />
+               </DataTrigger>
+               <DataTrigger Binding="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=ActiveContactSortOrder}" Value="DescendingByBirthday">
+                 <Setter Property="Visibility" Value="Collapsed" />
+               </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+
+        <TextBlock DockPanel.Dock="Top" Margin="0,1,0,0" Text="{Binding Birthday}">
+          <TextBlock.Style>
+            <Style BasedOn="{StaticResource MessageTextBlockStyle}" TargetType="{x:Type TextBlock}">
+              <Setter Property="Visibility" Value="Collapsed" />
+              <Style.Triggers>
+               <DataTrigger Binding="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=ActiveContactSortOrder}" Value="AscendingByBirthday">
+                 <Setter Property="Visibility" Value="Visible" />
+               </DataTrigger>
+               <DataTrigger Binding="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=ActiveContactSortOrder}" Value="DescendingByBirthday">
+                 <Setter Property="Visibility" Value="Visible" />
+               </DataTrigger>
+               <DataTrigger Binding="{Binding Birthday}" Value="">
+                 <Setter Property="Visibility" Value="Collapsed" />
+               </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
+        <TextBlock DockPanel.Dock="Bottom" Text="{Binding StatusMessage.Created, Converter={StaticResource DateTimeConverter}}" Margin="0,2,0,0" Style="{StaticResource CreatedTextBlockStyle}" Visibility="{Binding StatusMessage.Message, Converter={StaticResource ContentVisibilityConverter}}" />
+        
+        <TextBlock Margin="0,9,0,0"
+            Style="{StaticResource MessageTextBlockStyle}" 
+            TextTrimming="WordEllipsis"
+            TextWrapping="Wrap" 
+            Visibility="{Binding StatusMessage.Message, Converter={StaticResource ContentVisibilityConverter}}">
+          <FacebookClient:HyperlinkTextContent Text="{Binding StatusMessage.Message}" FontWeight="Medium" />
+        </TextBlock>
+
+      </DockPanel>
+    </Grid>
+
+    <DataTemplate.Triggers>
+      <DataTrigger Binding="{Binding Path=OnlinePresence}" Value="Active">
+                <Setter TargetName="Online" Property="Visibility" Value="Visible" />
+                <Setter TargetName="Away" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+      <DataTrigger Binding="{Binding Path=OnlinePresence}" Value="Idle">
+                <Setter TargetName="Online" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="Away" Property="Visibility" Value="Visible" />
+            </DataTrigger>
+    </DataTemplate.Triggers>
+  </DataTemplate>
+
+
+  <ControlTemplate TargetType="{x:Type FacebookClient:FriendSummaryControl}" x:Key="FriendSummaryTemplate">
+    <Grid DataContext="{Binding ElementName=FriendsList, Path=ListPager}">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      
+      <FacebookClient:SortControl Width="200" SortOrderMode="Contacts" TitleText="{Binding Path=ItemsSource.Count, StringFormat=\{0\} friends}">
+        <FacebookClient:SortControl.Style>
+          <Style TargetType="{x:Type FacebookClient:SortControl}">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type FacebookClient:MainWindow}}, Path=IsInSmallMode}" Value="True">
+                <Setter Property="Visibility" Value="Collapsed" />
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </FacebookClient:SortControl.Style>
+      </FacebookClient:SortControl>
+
+      <FacebookClient:PaginatedItemsControl 
+          x:Name="FriendsList"
+          Grid.Column="1"
+          Margin="20,20,5,5" 
+          PaginatedItemsSource="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=Friends}" 
+          ItemTemplate="{StaticResource FriendSummaryItemTemplate}"
+          Background="Transparent">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <FacebookClient:AnimatingTilePanel ItemHeight="125" ItemWidth="350" Attraction="2.4" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+      </FacebookClient:PaginatedItemsControl>
+
+      <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10,0,0,5">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="Auto" MinWidth="75" />
+          <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="1" Foreground="{DynamicResource FacebookBlueBrush}" HorizontalAlignment="Center" VerticalAlignment="Center">
+          <TextBlock.Text>
+            <MultiBinding StringFormat="{}Page {0} of {1}">
+              <Binding Path="CurrentPageIndex" Converter="{StaticResource AddConverter}" ConverterParameter="1" />
+              <Binding Path="PageCount" />
+            </MultiBinding>
+          </TextBlock.Text>
+        </TextBlock>
+        <RepeatButton x:Name="NavigateLeft" Grid.Column="0" Margin="5,1" Style="{StaticResource NavigateLeftButtonStyle}" Command="{Binding Path=PreviousCommand}" ToolTip="Previous Page" />
+        <RepeatButton x:Name="NavigateRight" Grid.Column="2" Margin="5,1" Style="{StaticResource NavigateRightButtonStyle}" Command="{Binding Path=NextCommand}" ToolTip="Next Page" />
+      </Grid>
+    </Grid>
+  </ControlTemplate>
+
+  <ClientManagerControls:SizeControlTemplateCollection x:Key="FriendSummaryTemplateCollection">
+    <ClientManagerControls:SizeControlTemplate Template="{StaticResource FriendSummaryTemplate}" />
+  </ClientManagerControls:SizeControlTemplateCollection>
+
+  <DataTemplate DataType="{x:Type Facebook:FacebookContactCollection}">
+    <FacebookClient:FriendSummaryControl 
+        KeyboardNavigation.IsTabStop="False" 
+        FocusVisualStyle="{x:Null}" 
+        Templates="{StaticResource FriendSummaryTemplateCollection}" />
+  </DataTemplate>
+
+</ClientManagerView:EventResourceDictionary>

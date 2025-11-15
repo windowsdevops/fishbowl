@@ -1,0 +1,91 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EffectLibrary", "EffectLibrary\EffectLibrary.csproj", "{66271E3C-0725-4B49-B62B-910562AF4954}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransitionEffects", "TransitionEffects\TransitionEffects.csproj", "{C044C5A8-5694-4311-AB9B-FE1E122AEFE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientManager", "ClientManager\ClientManager.csproj", "{7B4CFB3D-C325-4386-8F35-22A533A2F50B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contigo", "Contigo\Contigo.csproj", "{92EF4985-F377-4707-B156-10A8D197B666}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Standard", "Standard\Standard.csproj", "{A1326555-AD64-4A93-A95C-B68ABD5672D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Windows.Shell", "Microsoft.Windows.Shell\Microsoft.Windows.Shell.csproj", "{55D5297C-F1DF-4B76-A3C1-D82CC294EEBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FishBowl", "Fishbowl\FishBowl.csproj", "{77308CBC-E2FF-4224-B115-FD28D80B3B38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Json", "Microsoft.Json\Microsoft.Json\Microsoft.Json.csproj", "{2E12ED56-6501-43A5-85C7-64255241D60E}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 9
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs03.codeplex.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Fishbowl\\FishBowl.csproj
+		SccProjectName1 = Fishbowl
+		SccLocalPath1 = Fishbowl
+		SccProjectUniqueName2 = TransitionEffects\\TransitionEffects.csproj
+		SccProjectName2 = TransitionEffects
+		SccLocalPath2 = TransitionEffects
+		SccProjectUniqueName3 = EffectLibrary\\EffectLibrary.csproj
+		SccProjectName3 = EffectLibrary
+		SccLocalPath3 = EffectLibrary
+		SccProjectUniqueName4 = ClientManager\\ClientManager.csproj
+		SccProjectName4 = ClientManager
+		SccLocalPath4 = ClientManager
+		SccProjectUniqueName5 = Contigo\\Contigo.csproj
+		SccProjectName5 = Contigo
+		SccLocalPath5 = Contigo
+		SccProjectUniqueName6 = Standard\\Standard.csproj
+		SccProjectName6 = Standard
+		SccLocalPath6 = Standard
+		SccProjectUniqueName7 = Microsoft.Windows.Shell\\Microsoft.Windows.Shell.csproj
+		SccProjectName7 = Microsoft.Windows.Shell
+		SccLocalPath7 = Microsoft.Windows.Shell
+		SccProjectUniqueName8 = Microsoft.Json\\Microsoft.Json\\Microsoft.Json.csproj
+		SccProjectName8 = Microsoft.Json/Microsoft.Json
+		SccLocalPath8 = Microsoft.Json\\Microsoft.Json
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{66271E3C-0725-4B49-B62B-910562AF4954}.Debug|x86.ActiveCfg = Debug|x86
+		{66271E3C-0725-4B49-B62B-910562AF4954}.Debug|x86.Build.0 = Debug|x86
+		{66271E3C-0725-4B49-B62B-910562AF4954}.Release|x86.ActiveCfg = Release|x86
+		{66271E3C-0725-4B49-B62B-910562AF4954}.Release|x86.Build.0 = Release|x86
+		{C044C5A8-5694-4311-AB9B-FE1E122AEFE2}.Debug|x86.ActiveCfg = Debug|x86
+		{C044C5A8-5694-4311-AB9B-FE1E122AEFE2}.Debug|x86.Build.0 = Debug|x86
+		{C044C5A8-5694-4311-AB9B-FE1E122AEFE2}.Release|x86.ActiveCfg = Release|x86
+		{C044C5A8-5694-4311-AB9B-FE1E122AEFE2}.Release|x86.Build.0 = Release|x86
+		{7B4CFB3D-C325-4386-8F35-22A533A2F50B}.Debug|x86.ActiveCfg = Debug|x86
+		{7B4CFB3D-C325-4386-8F35-22A533A2F50B}.Debug|x86.Build.0 = Debug|x86
+		{7B4CFB3D-C325-4386-8F35-22A533A2F50B}.Release|x86.ActiveCfg = Release|x86
+		{7B4CFB3D-C325-4386-8F35-22A533A2F50B}.Release|x86.Build.0 = Release|x86
+		{92EF4985-F377-4707-B156-10A8D197B666}.Debug|x86.ActiveCfg = Debug|x86
+		{92EF4985-F377-4707-B156-10A8D197B666}.Debug|x86.Build.0 = Debug|x86
+		{92EF4985-F377-4707-B156-10A8D197B666}.Release|x86.ActiveCfg = Release|x86
+		{92EF4985-F377-4707-B156-10A8D197B666}.Release|x86.Build.0 = Release|x86
+		{A1326555-AD64-4A93-A95C-B68ABD5672D4}.Debug|x86.ActiveCfg = Debug|x86
+		{A1326555-AD64-4A93-A95C-B68ABD5672D4}.Debug|x86.Build.0 = Debug|x86
+		{A1326555-AD64-4A93-A95C-B68ABD5672D4}.Release|x86.ActiveCfg = Release|x86
+		{55D5297C-F1DF-4B76-A3C1-D82CC294EEBB}.Debug|x86.ActiveCfg = Debug|x86
+		{55D5297C-F1DF-4B76-A3C1-D82CC294EEBB}.Debug|x86.Build.0 = Debug|x86
+		{55D5297C-F1DF-4B76-A3C1-D82CC294EEBB}.Release|x86.ActiveCfg = Release|x86
+		{55D5297C-F1DF-4B76-A3C1-D82CC294EEBB}.Release|x86.Build.0 = Release|x86
+		{77308CBC-E2FF-4224-B115-FD28D80B3B38}.Debug|x86.ActiveCfg = Debug|x86
+		{77308CBC-E2FF-4224-B115-FD28D80B3B38}.Debug|x86.Build.0 = Debug|x86
+		{77308CBC-E2FF-4224-B115-FD28D80B3B38}.Release|x86.ActiveCfg = Release|x86
+		{77308CBC-E2FF-4224-B115-FD28D80B3B38}.Release|x86.Build.0 = Release|x86
+		{2E12ED56-6501-43A5-85C7-64255241D60E}.Debug|x86.ActiveCfg = Debug|x86
+		{2E12ED56-6501-43A5-85C7-64255241D60E}.Debug|x86.Build.0 = Debug|x86
+		{2E12ED56-6501-43A5-85C7-64255241D60E}.Release|x86.ActiveCfg = Release|x86
+		{2E12ED56-6501-43A5-85C7-64255241D60E}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

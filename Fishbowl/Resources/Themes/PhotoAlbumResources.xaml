@@ -1,0 +1,446 @@
+﻿<ClientManagerView:EventResourceDictionary 
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    x:Class="FacebookClient.PhotoAlbumEventResourceDictionary"    
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ClientManagerControls="clr-namespace:ClientManager.Controls;assembly=ClientManager"
+                    xmlns:FacebookClient="clr-namespace:FacebookClient"
+                    xmlns:Facebook="clr-namespace:Contigo;assembly=Contigo"
+                    xmlns:ClientManagerData="clr-namespace:ClientManager.Data;assembly=ClientManager"
+                    xmlns:ClientManager="clr-namespace:ClientManager;assembly=ClientManager"
+                    xmlns:ClientManagerView="clr-namespace:ClientManager.View;assembly=ClientManager">
+
+    <!-- Converter to clean HTML formatting out of displayed text -->
+    <FacebookClient:HtmlToCleanStringConverter x:Key="HtmlToCleanStringConverter" />
+
+    <!-- Converter to format the application dates consistently -->
+    <FacebookClient:DateTimeToStringConverter x:Key="DateTimeConverter"/>
+
+    <!-- Virtualizing panel used to display thumbnails -->
+    <ItemsPanelTemplate x:Key="VirtualizingHorizontalRowPanel">
+        <FacebookClient:RowScrollingPanel ItemHeight="220" ItemWidth="220"/>
+    </ItemsPanelTemplate>
+    
+    <FacebookClient:RandomAngleToTransformConverter x:Key="randomAngleToTransformConverter" />
+
+    <!-- Template for a thumbnail displayed in the gallery home -->
+    <DataTemplate x:Key="GalleryItemTemplate">
+        <ClientManagerControls:FacebookPhotoDragContainer FacebookPhoto="{Binding}">
+            <Button
+                Click="OnNavigateToContentButtonClicked"
+                ClientManagerView:ViewManager.NavigationContent="{Binding}"
+                IsEnabled="{Binding HasData, FallbackValue=False}"                                          
+                Style="{DynamicResource AnimatedAlbumItemButton}" 
+                RenderTransform="{Binding ., Converter={StaticResource randomAngleToTransformConverter}}">
+                <Button.ToolTip>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Caption}" MaxWidth="300" TextTrimming="CharacterEllipsis" >
+                        <TextBlock.Style>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Caption}" Value="">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock Text="{Binding Comments.Count, StringFormat=\{0\} comments}"  />
+                    </StackPanel>
+                </Button.ToolTip>
+                <Viewbox>
+          <Grid Width="160" Height="160">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="12" />
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="10" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="12" />
+              </Grid.RowDefinitions>
+
+              <Image Grid.Row="0" Grid.Column="0" Source="../Images/Controls/photo_top_left.png" Stretch="Fill" />
+              <Image Grid.Row="0" Grid.Column="1" Source="../Images/Controls/photo_top.png" Stretch="Fill" />
+              <Image Grid.Row="0" Grid.Column="2" Source="../Images/Controls/photo_top_right.png" Stretch="Fill" />
+
+              <Image Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Source="../Images/Controls/photo_left.png" Stretch="Fill" />
+              <Image Grid.Row="1" Grid.RowSpan="2" Grid.Column="2" Source="../Images/Controls/photo_right.png" Stretch="Fill" />
+              <Rectangle Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" Fill="#FFFFFF" Stretch="Fill" />
+
+              <Image Grid.Row="3" Grid.Column="0" Source="../Images/Controls/photo_bottom_left.png" Stretch="Fill" />
+              <Image Grid.Row="3" Grid.Column="1" Source="../Images/Controls/photo_bottom.png" Stretch="Fill" />
+              <Image Grid.Row="3" Grid.Column="2" Source="../Images/Controls/photo_bottom_right.png" Stretch="Fill" />
+
+              <ClientManagerControls:FacebookImageControl Grid.Row="1" Grid.Column="1" 
+                  FacebookImage="{Binding Image}" 
+                  FacebookImageDimensions="Normal" 
+                  RenderTransformOrigin="0.5,0.5">
+                <ClientManagerControls:FacebookImageControl.Template>
+                  <ControlTemplate TargetType="{x:Type ClientManagerControls:FacebookImageControl}">
+                    <Grid Margin="6">
+                      <Border x:Name="PlaceholderBorder" Background="Black" Visibility="Collapsed" />
+                      <Image x:Name="MainImage" VerticalAlignment="Top" HorizontalAlignment="Center" Stretch="Uniform" Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ImageSource}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                      <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=ImageSource}" Value="{x:Null}">
+                        <Setter TargetName="MainImage" Property="Visibility" Value="Collapsed" />
+                        <Setter TargetName="PlaceholderBorder" Property="Visibility" Value="Visible" />
+                      </DataTrigger>
+                    </ControlTemplate.Triggers>
+                  </ControlTemplate>
+                </ClientManagerControls:FacebookImageControl.Template>
+              </ClientManagerControls:FacebookImageControl>
+
+              <TextBlock Grid.Column="1" Grid.Row="2" Margin="4,0" FontSize="10" FontFamily="Lucida Handwriting Italic" VerticalAlignment="Center" HorizontalAlignment="Left" Text="{Binding FirstComment.Text}" TextTrimming="CharacterEllipsis" />
+            </Grid>
+          </Grid>
+        </Viewbox>
+            </Button>
+        </ClientManagerControls:FacebookPhotoDragContainer>
+    </DataTemplate>
+
+    <!-- Data template for the photo thumbnails in list view-->
+    <DataTemplate DataType="{x:Type Facebook:FacebookPhoto}" x:Key="PhotoThumbnailListTemplate">
+        <Button
+            Click="OnNavigateToContentButtonClicked"
+            ClientManagerView:ViewManager.NavigationContent="{Binding}"
+            IsEnabled="{Binding HasData, FallbackValue=False}"                                      
+            Style="{StaticResource AnimatedAlbumItemButton}" Margin="6">
+            <StackPanel>
+                <Border BorderBrush="{DynamicResource Border_ItemOutline}" BorderThickness="{DynamicResource Border_ItemOutline_Thickness}" Margin="4,4,4,2">
+                    <ClientManagerControls:ImageThumbnailControl FacebookImage="{Binding Path=Image}" ImageType="Other" FacebookImageDimensions="Normal" 
+                                                                 Width="130" Height="130"  RenderTransformOrigin="0.5,0.5" Focusable="False"/>
+                </Border>
+                <TextBlock Text="{Binding Path=Caption}" Foreground="{DynamicResource Foreground_ContentElement}" FontSize="11" TextWrapping="WrapWithOverflow" Height="30" Margin="2,0,2,2"/>
+            </StackPanel>
+        </Button>
+    </DataTemplate>
+
+    <!-- Control template for the photo album control -->
+    <ControlTemplate TargetType="{x:Type FacebookClient:PhotoAlbumControl}" x:Key="PhotoAlbumTemplate_Standard">
+        <Grid x:Name="CenterGrid" Margin="0,35,0,0">
+
+            <Grid DataContext="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=ActivePhotoAlbum}" Margin="20,15,0,10">
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Grid Panel.ZIndex="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>                
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="106" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <ClientManagerControls:FacebookPhotoDragContainer FacebookPhoto="{Binding Path=Photos[0]}">
+                            <Button x:Name="ActivityButton" VerticalAlignment="Top" Style="{StaticResource AnimatedItemButton}" 
+                                    Margin="0, 0, 0, 0" Click="OnNavigateToContentButtonClicked" HorizontalAlignment="Left" 
+                                    ClientManagerView:ViewManager.NavigationContent="{Binding Owner}" 
+                                    RenderTransformOrigin="0.5,0.5">
+                                <Button.RenderTransform>
+                                    <TransformGroup>
+                                        <RotateTransform Angle="-6"/>
+                                    </TransformGroup>
+                                </Button.RenderTransform>
+                                <Grid Width="106" Height="106">
+                                    <Image Name="Placeholder" Source="pack://application:,,,/Resources/Images/avatar_background.png"/>
+                                    <ClientManagerControls:FacebookImageControl FacebookImage="{Binding Owner.Image}" 
+                                                                    FacebookImageDimensions="Big">
+                                        <ClientManagerControls:FacebookImageControl.Template>
+                                            <ControlTemplate TargetType="{x:Type ClientManagerControls:FacebookImageControl}">
+                                                <Border Margin="4,4,4.5,6">
+                                                    <Border.Background>
+                                                        <ImageBrush Stretch="UniformToFill" ImageSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ImageSource}" />
+                                                    </Border.Background>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </ClientManagerControls:FacebookImageControl.Template>
+                                    </ClientManagerControls:FacebookImageControl>
+                                </Grid>
+                            </Button>
+                        </ClientManagerControls:FacebookPhotoDragContainer>
+                        
+                        
+                        <Grid Grid.Column="1" Margin="20,-20,10,10" MaxHeight="265" VerticalAlignment="Bottom">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                
+                            </Grid.RowDefinitions>
+                            
+                            <TextBlock Grid.Row="0" Foreground="#C0000000" FontSize="42px" FontFamily="../Fonts/#Gotham" FontWeight="Medium" 
+                                     Margin="-2,0,0,0"  TextWrapping="Wrap" Text="{Binding Path=Title}" HorizontalAlignment="Left" />
+                            
+                            <StackPanel  Grid.Row="1"  Orientation="Horizontal" HorizontalAlignment="Left" Margin="2,0,0,0"  DataContext="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=ActivePhotoAlbum.Owner}">
+                             
+                                <TextBlock Style="{StaticResource ProfileNameTextBlockStyle}" TextWrapping="Wrap" Margin="0,0,0,0">
+                                        <Hyperlink Click="OnNavigateToContentButtonClicked" 
+                                                   ClientManagerView:ViewManager.NavigationContent="{Binding}" >
+                                          <FacebookClient:BindableRun Text="{Binding Name}"/>
+                                        </Hyperlink>
+                                        <InlineUIContainer>
+                                            <Grid Width="14" Height="14" Margin="6,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                <Image Name="Away" Source="pack://application:,,,/Resources/Images/status_away.png" Width="14" Height="14" Visibility="Collapsed"/>
+                                                <Image Name="Online" Source="pack://application:,,,/Resources/Images/status_online.png" Width="14" Height="14" Visibility="Collapsed"/>
+                                            </Grid> 
+                                        </InlineUIContainer>
+                                </TextBlock>
+                                
+                            </StackPanel>    
+                            
+                            <StackPanel  Grid.Row="2"  Orientation="Horizontal" HorizontalAlignment="Left" Margin="2,0,0,0" >
+                                <TextBlock Foreground="#8F8F8F" FontSize="12px" FontFamily="../Fonts/#Gotham" FontWeight="Light" Margin="0,0,0,0" Text="{Binding Path=LastModified, Converter={StaticResource DateTimeConverter}}"/>
+                                <TextBlock Margin="10,0,0,0" Foreground="#8F8F8F" FontSize="12px" FontFamily="../Fonts/#Gotham" FontWeight="Light"  Text="{Binding Path=Photos.Count}" />
+                                <TextBlock Margin="5,0,0,0" Foreground="#8F8F8F" FontSize="12px" FontFamily="../Fonts/#Gotham" FontWeight="Light" >Photos</TextBlock>
+                            </StackPanel>
+                            
+                            <StackPanel  Grid.Row="3"  Orientation="Horizontal" Margin="2,0,0,0" >
+                                <TextBlock Foreground="{DynamicResource Foreground_ContentElement}" FontSize="14" 
+                                           FontFamily="../Fonts/#Gotham" Margin="0,6,0,0" TextWrapping="Wrap">
+                                    <InlineUIContainer><Image Source="../Images/save.png" Width="18" VerticalAlignment="Bottom" /></InlineUIContainer>
+                                 <Hyperlink Command="FacebookClient:PhotoAlbumControl.SaveAlbumCommand" CommandParameter="{Binding}" AutomationProperties.AutomationId="SaveAlbum" AutomationProperties.Name="SaveAlbum"               
+                                    ToolTip="Save Album"   FontFamily="../Fonts/#Gotham" FontSize="14">
+                                     <Run xml:space="preserve" BaselineAlignment="Center"> Save Album</Run></Hyperlink>
+						        </TextBlock>
+
+                                <TextBlock Foreground="{DynamicResource Foreground_ContentElement}" FontSize="14" 
+                                           FontFamily="../Fonts/#Gotham" Margin="10,6,0,0" TextWrapping="Wrap">
+    							<InlineUIContainer><Image Source="../Images/photo_slideshow.png" Width="18" VerticalAlignment="Bottom" /></InlineUIContainer>
+                                 <Hyperlink Command="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=NavigationCommands.NavigateSlideShowCommand}"               
+                                    ToolTip="Play Slideshow"   FontFamily="../Fonts/#Gotham" FontSize="14">
+                                     <Run xml:space="preserve" BaselineAlignment="Center"> Play Slideshow</Run></Hyperlink>
+						        </TextBlock>
+                                
+                            </StackPanel>
+
+                            <TextBlock  Grid.Row="4"   Foreground="{DynamicResource Foreground_ContentElement}" FontSize="16" HorizontalAlignment="Left" Margin="0,14,0,0" TextWrapping="Wrap"  Height="Auto" 
+                                        MaxWidth="900" MaxHeight="100" MinWidth="100" TextTrimming="WordEllipsis" IsHyphenationEnabled="True">
+                                     <FacebookClient:HyperlinkTextContent Text="{Binding Path=Description, Mode=OneWay}" />
+                            </TextBlock>
+                        </Grid>
+                    </Grid>
+                    <DockPanel Grid.Row="1" DataContext="{Binding ElementName=AlbumList, Path=ListPager}">
+
+                        <Grid DockPanel.Dock="Bottom" HorizontalAlignment="Stretch" Margin="0,16,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <RepeatButton x:Name="NavigateUp"  Grid.Column="0"  Margin="0,5,0,0" Style="{StaticResource NavigateUpButtonStyle}" 
+                                        ToolTip="Previous Album (Up Arrow Key)"  Command="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=NavigationCommands.NavigateToPriorSiblingCommand}"/>
+                            <RepeatButton x:Name="NavigateDown" Grid.Column="1" Margin="5,5,0,0" Style="{StaticResource NavigateDownButtonStyle}"
+                                            ToolTip="Next Album (Down Arrow Key)" Command="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=NavigationCommands.NavigateToNextSiblingCommand}"/>
+
+                            <!--<RepeatButton Grid.Column="0" Margin="0,-3,0,0" Template="{DynamicResource ScrollbarButtonTemplate}" RenderTransformOrigin="0.5,0.5"  ToolTip="Previous Album (Up Arrow Key)"
+                                          Command="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=NavigationCommands.NavigateToPriorSiblingCommand}">
+                                <RepeatButton.RenderTransform>
+                                    <RotateTransform Angle="90"/>
+                                </RepeatButton.RenderTransform>
+                            </RepeatButton>
+
+                            <TextBlock Grid.Column="1" Foreground="{DynamicResource Foreground_ContentElement}" FontSize="14" HorizontalAlignment="Left" 
+                                           FontFamily="../Fonts/#Gotham" Margin="0,6,0,0" TextWrapping="Wrap">
+                                 <Hyperlink Command="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=NavigationCommands.NavigateToPriorSiblingCommand}"                
+                                    ToolTip="Previous Album (Up Arrow Key)" Foreground="Black"  FontFamily="../Fonts/#Gotham" FontSize="14">
+                                     <Run xml:space="preserve" BaselineAlignment="Center"> Previous Album</Run></Hyperlink>
+						        </TextBlock>-->
+
+                            <!--<TextBlock Foreground="Black" Grid.Column="1" Text="Previous Album" HorizontalAlignment="Left" ToolTip="Next Album (Up Arrow Key)" />-->
+                            
+                            <!--<RepeatButton Grid.Column="2"  Margin="0,3,0,0" Template="{DynamicResource ScrollbarButtonTemplate}"  RenderTransformOrigin="0.5,0.5"  ToolTip="Next Album (Down Arrow Key)" 
+                                          Command="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=NavigationCommands.NavigateToNextSiblingCommand}">
+                                <RepeatButton.RenderTransform>
+                                    <RotateTransform Angle="270"/>
+                                </RepeatButton.RenderTransform>                                 
+                            </RepeatButton>
+                            <TextBlock Foreground="Black" Grid.Column="3" Text="Next Album" HorizontalAlignment="Left" ToolTip="Next Album (Down Arrow Key)"/>-->
+                            
+                            <RepeatButton x:Name="NavigateLeft" Grid.Column="5" Margin="5" Style="{StaticResource NavigateLeftButtonStyle}" Command="{Binding Path=PreviousCommand}"  ToolTip="Previous Page"/>
+
+                            <TextBlock Foreground="Black" Grid.Column="6" VerticalAlignment="Center">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0} of {1}">
+                                    <Binding Path="CurrentPageIndex" Converter="{StaticResource AddConverter}" ConverterParameter="1"/>
+                                    <Binding Path="PageCount"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                            </TextBlock>
+                            <!--<RepeatButton Grid.Column="5" Margin="10 0" Template="{DynamicResource ScrollbarButtonTemplate}" Command="{Binding Path=PreviousCommand}" ToolTip="Previous Page"/>
+                            <RepeatButton Grid.Column="7" Margin="10 0" Template="{DynamicResource ScrollbarButtonTemplate}" Command="{Binding Path=NextCommand}" RenderTransformOrigin="0.5,0.5" ToolTip="Next Page">
+                                <RepeatButton.RenderTransform>
+                                    <RotateTransform Angle="180"/>
+                                </RepeatButton.RenderTransform>
+                            </RepeatButton>-->
+
+                            
+                            
+                            <RepeatButton x:Name="NavigateRight" Grid.Column="7"  Margin="5" Style="{StaticResource NavigateRightButtonStyle}" Command="{Binding Path=NextCommand}" ToolTip="Next Page"/>
+                        </Grid>
+                        
+                   
+                        
+                        
+                        <!--<StackPanel DockPanel.Dock="Right" Margin="10">
+                            <Button Content="&lt;" FontSize="20" Foreground="White" FontFamily="Calibri" Command="{Binding Path=PreviousCommand}" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
+                            <Button Content="&gt;" FontSize="20" Foreground="White" FontFamily="Calibri" Command="{Binding Path=NextCommand}" Margin="0,10,0,0" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"/>
+                        </StackPanel>-->
+
+                        <FacebookClient:PaginatedItemsControl x:Name="AlbumList"
+                                                              Margin="10,0,10,0" 
+                                                              PaginatedItemsSource="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=ActivePhotoAlbum.Photos}" 
+                                                              ItemTemplate="{StaticResource GalleryItemTemplate}" 
+                                                              Focusable="False">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <FacebookClient:AnimatingTilePanel ItemHeight="160" ItemWidth="160" Attraction="2.4"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </FacebookClient:PaginatedItemsControl>
+                    </DockPanel>
+                    <DockPanel Grid.Row="0" >
+                  
+
+                    </DockPanel>
+                </Grid>
+                <!--<Grid Opacity="0.3" Panel.ZIndex="2">
+                    <ClientManagerControls:LargePhotoThumbnailControl FacebookPhoto="{Binding Path=Photos[0]}" RenderTransformOrigin="0.5,0.5" Focusable="False"/>
+                </Grid>-->
+            </Grid>
+        </Grid>
+    </ControlTemplate>
+
+    <!-- Control template for the photo album control when the window is narrow -->
+    <ControlTemplate TargetType="{x:Type FacebookClient:PhotoAlbumControl}" x:Key="PhotoAlbumTemplate_Narrow">
+        <Grid x:Name="CenterGrid" Margin="0,5,10,0">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF000000" Offset="1"/>
+                    <GradientStop Color="#FF4D4B4B" Offset="0"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid DataContext="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=ActivePhotoAlbum}" Margin="20,15,0,10">
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Grid Panel.ZIndex="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Margin="20,10,10,0" MaxHeight="265" VerticalAlignment="Top">
+                        <TextBlock Foreground="{DynamicResource Foreground_ContentElement}" FontSize="42" FontFamily="Segoe UI" TextWrapping="Wrap" Text="{Binding Path=Title}"/>
+                        <TextBlock Foreground="{DynamicResource Foreground_ContentElement}" FontSize="14">
+                <TextBlock Text="{Binding Path=LastModified, Converter={StaticResource DateTimeConverter}}"/> 
+              </TextBlock>
+                        <TextBlock Foreground="{DynamicResource Foreground_ContentElement}" FontSize="14" FontFamily="Segoe UI" TextWrapping="Wrap" Text="{Binding Path=Title}">
+                <TextBlock Text="{Binding Path=Photos.Count}"/> Photos | 
+                <Hyperlink Command="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=NavigationCommands.NavigateSlideShowCommand}"               
+                           ToolTip="Slide Show" Foreground="#DDDDDD"  FontSize="14">Slideshow</Hyperlink>
+							
+						</TextBlock>
+                    </StackPanel>
+                    <ItemsControl Grid.Row="1" Margin="20,0,20,0" ItemsSource="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=ActivePhotoAlbum.Photos}" ItemsPanel="{StaticResource VirtualizingHorizontalRowPanel}" ItemTemplate="{StaticResource GalleryItemTemplate}" Focusable="False"/>
+                </Grid>
+                <!--<Grid Opacity="0.3" Panel.ZIndex="2">
+                    <ClientManagerControls:LargePhotoThumbnailControl FacebookPhoto="{Binding Path=Photos[0]}" RenderTransformOrigin="0.5,0.5" Focusable="False"/>
+                </Grid>-->
+            </Grid>
+        </Grid>
+    </ControlTemplate>
+
+    <!-- Control template for the photo album control when the window is very small -->
+    <ControlTemplate TargetType="{x:Type FacebookClient:PhotoAlbumControl}" x:Key="PhotoAlbumTemplate_Mini">
+        <Grid x:Name="CenterGrid" Margin="0,5,10,0">
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF000000" Offset="1"/>
+                    <GradientStop Color="#FF4D4B4B" Offset="0"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid DataContext="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=ActivePhotoAlbum}" Margin="20,15,0,10">
+                <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                <Grid Panel.ZIndex="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Margin="20,10,10,0" MaxHeight="265" VerticalAlignment="Top">
+                        <TextBlock Foreground="{DynamicResource Foreground_ContentElement}" FontSize="36" FontFamily="Segoe UI" TextWrapping="Wrap" Text="{Binding Path=Title}"/>
+                        <TextBlock Foreground="{DynamicResource Foreground_ContentElement}" FontSize="14">
+							<TextBlock Text="{Binding Path=LastModified, Converter={StaticResource DateTimeConverter}}"/> 
+
+						</TextBlock>
+                        <TextBlock Foreground="{DynamicResource Foreground_ContentElement}" FontSize="14" FontFamily="Segoe UI" TextWrapping="Wrap" Text="{Binding Path=Title}">
+							<TextBlock Text="{Binding Path=Photos.Count}"/> Photos |
+							<Hyperlink Command="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=NavigationCommands.NavigateSlideShowCommand}"               
+                           ToolTip="Slide Show" Foreground="#DDDDDD"  FontSize="14">Slideshow</Hyperlink>
+							
+						</TextBlock>
+                    </StackPanel>
+                    <ItemsControl Grid.Row="1" Margin="20,0,20,0" ItemsSource="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=ActivePhotoAlbum.Photos}" 
+								  ItemsPanel="{StaticResource VirtualizingHorizontalRowPanel}" 
+								  ItemTemplate="{StaticResource GalleryItemTemplate}" Focusable="False"/>
+                </Grid>
+                <!--<Grid Opacity="0.3" Panel.ZIndex="2">
+                    <ClientManagerControls:LargePhotoThumbnailControl FacebookPhoto="{Binding Path=Photos[0]}" RenderTransformOrigin="0.5,0.5" Focusable="False"/>
+                </Grid>-->
+            </Grid>
+        </Grid>
+    </ControlTemplate>
+
+    <!-- Collection of templates to use for the photo album control, depending on the amount of space available -->
+    <ClientManagerControls:SizeControlTemplateCollection x:Key="PhotoAlbumTemplateCollection">
+        <ClientManagerControls:SizeControlTemplate MaxHeight="320" Template="{StaticResource PhotoAlbumTemplate_Standard}" />
+        <!-- mini -->
+        <ClientManagerControls:SizeControlTemplate MaxWidth="600" Template="{StaticResource PhotoAlbumTemplate_Standard}" />
+        <!-- narrow -->
+        <ClientManagerControls:SizeControlTemplate MaxHeight="500" Template="{StaticResource PhotoAlbumTemplate_Standard}" />
+        <!-- narrow -->
+        <ClientManagerControls:SizeControlTemplate MinWidth="600" MinHeight="500" Template="{StaticResource PhotoAlbumTemplate_Standard}" />
+    </ClientManagerControls:SizeControlTemplateCollection>
+
+    <!--Control template for the photo album control-->
+    <Style TargetType="{x:Type FacebookClient:PhotoAlbumControl}">
+        <Setter Property="KeyboardNavigation.IsTabStop" Value="False"/>
+        <Setter Property="AutomationProperties.AutomationId" Value="PhotoAlbumFront" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Templates" Value="{StaticResource PhotoAlbumTemplateCollection}" />
+    </Style>
+
+</ClientManagerView:EventResourceDictionary>

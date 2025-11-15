@@ -1,0 +1,574 @@
+<UserControl x:Class="FacebookClient.SearchViewControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ClientManager="clr-namespace:ClientManager;assembly=ClientManager"
+             xmlns:FacebookClient="clr-namespace:FacebookClient"
+             xmlns:ClientManagerControls="clr-namespace:ClientManager.Controls;assembly=ClientManager"
+             FocusVisualStyle="{x:Null}">
+    <UserControl.Resources>
+        
+        <Style x:Key="GalleryAlbumButton2" TargetType="{x:Type Button}">
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Panel.ZIndex" Value="1"/>
+            <Setter Property="Template">
+              <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                  <Grid>
+                    <ContentPresenter Focusable="False"/>
+                  </Grid>
+                </ControlTemplate>
+              </Setter.Value>
+            </Setter>
+        </Style>
+        
+        <!-- Style for the ListViewItems hosting the search results-->
+        <Style x:Key="PhotoStyle_Search" TargetType="{x:Type ListViewItem}"  >
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                        <Button Style="{DynamicResource Button_Image}" >
+                            <StackPanel VerticalAlignment="Top">
+                                <Image Source="{Binding Path=ThumbnailUri}" />
+                                <TextBlock x:Name="Title" Text="{Binding Path=Title}" TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Button>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Animated button containing an explorer node -->
+        <Style x:Key="PhotoExplorerNodeButton" TargetType="{x:Type Button}">
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border x:Name="ButtonBorder" RenderTransformOrigin="0.5,0.5" CornerRadius="7">
+                            <Border.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                </TransformGroup>
+                            </Border.RenderTransform>
+                            <ContentPresenter Focusable="False"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}"  Value="True" />
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="ButtonBorder">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1" KeySpline="0,0,0.875,1"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.0400000" Value="1.3" KeySpline="0.125,0,0.875,1"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.0700000" Value="1.2"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="ButtonBorder">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1" KeySpline="0,0,0.875,1"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.0400000" Value="1.3" KeySpline="0.125,0,0.875,1"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.0700000" Value="1.2"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiDataTrigger.EnterActions>
+                                <MultiDataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="ButtonBorder">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.1500000" Value="1" KeySpline="0,0,0.875,1"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="1.05" KeySpline="0,0,0.875,1"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="ButtonBorder">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.1500000" Value="1" KeySpline="0,0,0.875,1"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="1.05" KeySpline="0,0,0.875,1"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiDataTrigger.ExitActions>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsKeyboardFocused}"  Value="True" />
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="ButtonBorder">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1" KeySpline="0,0,0.875,1"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.0400000" Value="1.3" KeySpline="0.125,0,0.875,1"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.0700000" Value="1.2"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="ButtonBorder">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1" KeySpline="0,0,0.875,1"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.0400000" Value="1.3" KeySpline="0.125,0,0.875,1"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.0700000" Value="1.2"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiDataTrigger.EnterActions>
+                                <MultiDataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="ButtonBorder">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.1500000" Value="1" KeySpline="0,0,0.875,1"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="1.05" KeySpline="0,0,0.875,1"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="ButtonBorder">
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.1500000" Value="1" KeySpline="0,0,0.875,1"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="1.05" KeySpline="0,0,0.875,1"/>
+                                                <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </MultiDataTrigger.ExitActions>
+                            </MultiDataTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- DataTemplate for generic nodes display a string, like a simple search -->
+        <DataTemplate DataType="{x:Type ClientManagerControls:PhotoExplorerBaseNode}">
+            <Grid x:Name="Root">
+                <Ellipse Fill="#666666" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+                <TextBlock Text="{Binding Path=Name}" Margin="13" Foreground="#FFFFFF" FontSize="14" FontWeight="Bold"/>
+            </Grid>
+        </DataTemplate>
+
+        <!-- DataTemplate for explorer nodes that display a photo -->
+        <DataTemplate DataType="{x:Type ClientManagerControls:PhotoExplorerPhotoNode}">
+            <Button
+                Command="ClientManagerControls:PhotoExplorerControl.SwitchCenterNodeCommand" CommandParameter="{Binding}"                                        
+                Style="{DynamicResource AnimatedItemButton}">
+                <Viewbox>
+                    <Grid Margin="2.5" Width="92" Height="92">
+                        <Image Name="Placeholder" Source="pack://application:,,,/Resources/Images/photo_background.png"/>
+                        <ClientManagerControls:FacebookImageControl FacebookImage="{Binding Path=Photo.Image}" FacebookImageDimensions="Small">
+                            <ClientManagerControls:FacebookImageControl.Template>
+                                <ControlTemplate TargetType="{x:Type ClientManagerControls:FacebookImageControl}">
+                                    <Image Margin="4,4,6,16" Stretch="UniformToFill" Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ImageSource}" />
+                                </ControlTemplate>
+                            </ClientManagerControls:FacebookImageControl.Template>
+                        </ClientManagerControls:FacebookImageControl>
+                    </Grid>
+                </Viewbox>
+                <!--<Border BorderBrush="{DynamicResource Border_ItemOutline}" BorderThickness="{DynamicResource Border_ItemOutline_Thickness}" Margin="3">
+                    <ClientManagerControls:ImageThumbnailControl FacebookImage="{Binding Path=Image}" ImageType="Other" Width="80" Height="80" RenderTransformOrigin="0.5,0.5" Focusable="False" />
+                </Border>-->
+            </Button>
+        </DataTemplate>
+
+        <!-- DataTemplate for explorer nodes that display an album  -->
+        <DataTemplate DataType="{x:Type ClientManagerControls:PhotoExplorerAlbumNode}">
+            <Button Style="{StaticResource GalleryAlbumButton2}"
+                        Command="ClientManagerControls:PhotoExplorerControl.SwitchCenterNodeCommand" CommandParameter="{Binding}" 
+                        Width="220" Height="160">
+                <Grid>
+                    <Grid Margin="10,0,0,0" Name="EffectGrid" Visibility="Collapsed" HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Grid.Effect>
+                            <DropShadowEffect BlurRadius="0" ShadowDepth="0" Color="#FF3B5998" Opacity=".5" />
+                        </Grid.Effect>
+                        <Grid Width="92" Height="92" HorizontalAlignment="Left" Margin="50,20,0,0" VerticalAlignment="Top">
+                            <Grid.Style>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Photos.Count}" Value="1">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Photos.Count}" Value="2">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
+                            <Rectangle Fill="White" Margin="0,0,3,3" />
+                        </Grid>
+                        <Grid Width="92" Height="92" HorizontalAlignment="Left" Margin="25,20,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <RotateTransform Angle="-8"/>
+                            </Grid.RenderTransform>
+                            <Grid.Style>
+                            <Style TargetType="{x:Type Grid}">
+                              <Setter Property="Visibility" Value="Visible" />
+                              <Style.Triggers>
+                                <DataTrigger Binding="{Binding Photos.Count}" Value="1">
+                                  <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                              </Style.Triggers>
+                            </Style>
+                          </Grid.Style>
+                            <Rectangle Fill="White" Margin="0,0,3,3" />
+                        </Grid>
+                        <Grid Width="92" Height="92" HorizontalAlignment="Left" Margin="0,15,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <RotateTransform Angle="-24"/>
+                            </Grid.RenderTransform>
+                            <Rectangle Fill="White" Margin="0,0,3,3" />
+                        </Grid>
+                        <Grid Width="50" Height="50" HorizontalAlignment="Left" Margin="85,85,0,0" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <RotateTransform Angle="-6"/>
+                            </Grid.RenderTransform>
+                            <Rectangle Fill="White" Margin="0,0,0,2" />
+                        </Grid>
+                    </Grid>
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <Grid Margin="60,20,0,0" Width="92" Height="92" RenderTransformOrigin="0.5,0.5" 
+                                  HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Image Source="pack://application:,,,/Resources/Images/photo_background.png"/>
+                            <ClientManagerControls:LargePhotoThumbnailControl Margin="4,4,6,16" FacebookPhoto="{Binding Path=Album.ThirdPhoto}"
+                                                                         RenderTransformOrigin="0.5,0.5"
+                                                                         Focusable="False" />
+                        </Grid>
+                        <Grid Margin="35,20,0,0" Width="92" Height="92" RenderTransformOrigin="0.5,0.5" 
+                                  HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Grid.RenderTransform>
+                                <RotateTransform Angle="-8"/>
+                            </Grid.RenderTransform>
+                            <Image Source="pack://application:,,,/Resources/Images/photo_background.png"/>
+                            <ClientManagerControls:LargePhotoThumbnailControl Margin="4,4,6,16" FacebookPhoto="{Binding Path=Album.SecondPhoto}"
+                                                                         RenderTransformOrigin="0.5,0.5"
+                                                                         Focusable="False" />
+                        </Grid>
+                        <Grid Margin="10,15,0,0" Width="92" Height="92" RenderTransformOrigin="0.5,0.5" 
+                                  HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Grid.RenderTransform>
+                                <RotateTransform Angle="-24"/>
+                            </Grid.RenderTransform>
+                            <Image Source="pack://application:,,,/Resources/Images/photo_background.png"/>
+                            <ClientManagerControls:LargePhotoThumbnailControl Margin="4,4,6,16" FacebookPhoto="{Binding Path=Album.FirstPhoto}"
+                                                                         RenderTransformOrigin="0.5,0.5"
+                                                                         Focusable="False" />
+                        </Grid>
+                        <Viewbox Width="50" Height="50" HorizontalAlignment="Left" Margin="95,85,0,0" VerticalAlignment="Bottom">
+                          <Grid Width="106" Height="106" DataContext="{Binding Album.Owner}">
+                            <Grid RenderTransformOrigin="0.5,0.5">
+                              <Grid.RenderTransform>
+                                <TransformGroup>
+                                  <RotateTransform Angle="-6"/>
+                                </TransformGroup>
+                              </Grid.RenderTransform>
+                              <Image Name="Placeholder" Source="pack://application:,,,/Resources/Images/avatar_background.png"/>
+                              <ClientManagerControls:FacebookImageControl FacebookImage="{Binding Image}" FacebookImageDimensions="Big">
+                                <ClientManagerControls:FacebookImageControl.Template>
+                                  <ControlTemplate TargetType="{x:Type ClientManagerControls:FacebookImageControl}">
+                                    <Border Margin="4,4,4.5,6">
+                                      <Border.Background>
+                                        <ImageBrush ImageSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ImageSource}" Stretch="UniformToFill"/>
+                                      </Border.Background>
+                                    </Border>
+                                  </ControlTemplate>
+                                </ClientManagerControls:FacebookImageControl.Template>
+                              </ClientManagerControls:FacebookImageControl>
+                            </Grid>
+                          </Grid>
+                        </Viewbox>
+                        <Grid.Triggers>                                                             
+                            <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid"  Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.0000000" Value="0"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid"  Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.0000000" Value="0"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.0900000" Value="3"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.0900000" Value="3"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="6"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="6"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                            <DiscreteObjectKeyFrame KeyTime="00:00:00.25" Value="{x:Static Visibility.Collapsed}" />
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.0000000" Value="6"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.0000000" Value="6"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.0900000" Value="3"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.0900000" Value="3"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="0"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="0"/>
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Grid.Triggers>
+                    </Grid>
+                </Grid>
+            </Button>
+        </DataTemplate>
+
+        <!-- DataTemplate for explorer nodes that display a contact -->
+        <DataTemplate DataType="{x:Type ClientManagerControls:PhotoExplorerContactNode}">
+            <Button x:Name="ItemButton" VerticalAlignment="Top" Margin="5" ClipToBounds="False" 
+                            Style="{StaticResource AnimatedItemButton}"
+                            RenderTransformOrigin="0.5,0.5"
+                            Command="ClientManagerControls:PhotoExplorerControl.SwitchCenterNodeCommand" CommandParameter="{Binding}">
+                <Button.RenderTransform>
+                    <TransformGroup>
+                        <RotateTransform Angle="-6"/>
+                    </TransformGroup>
+                </Button.RenderTransform>
+                <Viewbox>
+                    <Grid Width="106" Height="106">
+                        <Image Name="Placeholder" Source="pack://application:,,,/Resources/Images/avatar_background.png"/>
+                        <ClientManagerControls:FacebookImageControl FacebookImage="{Binding Path=Contact.Image}" FacebookImageDimensions="Normal">
+                            <ClientManagerControls:FacebookImageControl.Template>
+                                <ControlTemplate TargetType="{x:Type ClientManagerControls:FacebookImageControl}">
+                                    <Border Margin="4,4,4.5,6">
+                                        <Border.Background>
+                                            <ImageBrush Stretch="UniformToFill" ImageSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ImageSource}" />
+                                        </Border.Background>
+                                    </Border>
+                                </ControlTemplate>
+                            </ClientManagerControls:FacebookImageControl.Template>
+                        </ClientManagerControls:FacebookImageControl>
+                    </Grid>
+                </Viewbox>
+            </Button>
+        </DataTemplate>
+
+        <!-- DataTemplate for explorer nodes that display a status post  -->
+        <DataTemplate DataType="{x:Type ClientManagerControls:PhotoExplorerPostNode}">
+            <Button Command="ClientManagerControls:PhotoExplorerControl.SwitchCenterNodeCommand" CommandParameter="{Binding}" 
+                    Style="{StaticResource PhotoExplorerNodeButton}" Margin="2,6">
+                <Border Background="{DynamicResource Background_ExplorerNode}" CornerRadius="7" Padding="5" 
+                        Margin="2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Image Source="../Resources/Images/Icons/feed_icon.png" Width="16" Height="16" Margin="3,0,6,0" />
+                        <TextBlock Grid.Column="1" Text="{Binding Post.Message}" MaxWidth="200" FontWeight="Bold" 
+                                   Foreground="#FFFFFF" TextTrimming="CharacterEllipsis"/>
+                    </Grid>
+                </Border>
+            </Button>
+        </DataTemplate>
+
+        <!-- DataTemplate for explorer nodes that display a status comment  -->
+        <DataTemplate DataType="{x:Type ClientManagerControls:PhotoExplorerCommentNode}">
+            <Button Command="ClientManagerControls:PhotoExplorerControl.SwitchCenterNodeCommand" CommandParameter="{Binding}" 
+                    Style="{StaticResource PhotoExplorerNodeButton}" Margin="2,6">
+                <Border Background="#FFFFFF" CornerRadius="7" Padding="5" BorderBrush="#A03b5998" BorderThickness="1" 
+                        Margin="2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Image Source="../Resources/Images/comment_icon.png" Width="13" Height="13" Margin="3,0,6,0" />
+                        <TextBlock Grid.Column="1" Text="{Binding Comment.Text}" MaxWidth="200" FontWeight="Bold" Foreground="Black" TextTrimming="CharacterEllipsis"/>
+                    </Grid>
+                </Border>
+            </Button>
+        </DataTemplate>
+
+        <!-- DataTemplate for explorer nodes that display a tag -->
+        <DataTemplate DataType="{x:Type ClientManagerControls:PhotoExplorerTagNode}">
+            <Button Command="ClientManagerControls:PhotoExplorerControl.SwitchCenterNodeCommand" CommandParameter="{Binding}" 
+                    Style="{StaticResource PhotoExplorerNodeButton}" Margin="2,6">
+                <Border Background="{DynamicResource Background_ExplorerNode}" CornerRadius="7" Padding="5" 
+                        Margin="2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Image Source="../Resources/Images/Icons/notes_icon.png" Width="16" Height="16" Margin="3,0,6,0" />
+                        <TextBlock Grid.Column="1" Text="{Binding Path=Name}" MaxWidth="200" FontWeight="Bold" 
+                                   Foreground="#FFFFFF" TextTrimming="CharacterEllipsis"/>
+                    </Grid>
+                </Border>
+            </Button>
+        </DataTemplate>
+
+        <!--Control template for the list view-->
+        <ControlTemplate x:Key="SearchListViewTemplate">
+            <Grid x:Name="CenterGrid" Margin="0,5,10,0">
+                <Grid DataContext="{Binding Path=Album, RelativeSource={RelativeSource TemplatedParent}}" Margin="20,15,0,10">
+                    <Grid.Style>
+                        <Style TargetType="{x:Type Grid}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <Grid Name="Grid1" Panel.ZIndex="3" Visibility="Visible">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel Grid.Column="1" Margin="10,10,10,0"  MaxHeight="215" VerticalAlignment="Top">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Foreground="{DynamicResource Foreground_ContentElement}" FontSize="42" FontFamily="Cambria" TextWrapping="Wrap" Text="Search: "/>
+                                <TextBlock Foreground="{DynamicResource Foreground_ContentElement}" FontSize="42" FontFamily="Cambria" TextWrapping="Wrap" Text="{Binding Path=Title}"/>
+                            </StackPanel>
+                            <TextBlock Foreground="{DynamicResource Foreground_ContentElement}"  FontSize="14">
+                    <TextBlock Text="{Binding Path=ChangeDate, Converter={StaticResource DateTimeConverter}}"/> |
+                    <TextBlock Text="{Binding Path=Photos.Count}"/> Photos
+                  </TextBlock>
+                        </StackPanel>
+                        <ItemsControl Margin="20,0,20,0" Grid.ColumnSpan="2" Grid.Row="1" ItemsSource="{Binding Path=Album.Photos, RelativeSource={RelativeSource TemplatedParent}}" ItemsPanel="{DynamicResource VirtualizingHorizontalRowPanel}" ItemTemplate="{DynamicResource GalleryItemTemplate}" Focusable="False"/>
+                    </Grid>
+                    <Grid Name="Grid2" Visibility="Visible" Opacity="0.3" Panel.ZIndex="2">
+                        <ClientManagerControls:LargePhotoThumbnailControl FacebookPhoto="{Binding Path=Photos[0]}" RenderTransformOrigin="0.5,0.5" Focusable="False"/>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </ControlTemplate>
+
+        <!-- Button style for switching the search display mode-->
+        <Style x:Key="SearchModeButton" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource Foreground_ExplorerNodeDefault}"/>
+            <Setter Property="KeyboardNavigation.IsTabStop" Value="True"/>
+            <Setter Property="KeyboardNavigation.TabIndex" Value="50"/>
+            <Setter Property="Focusable" Value="True"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Margin="8,2" Background="Transparent">
+                            <TextBlock Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" 
+                                       FontSize="14px">
+                                <TextBlock.TextDecorations>
+                                    <TextDecoration Location="Underline" PenOffset="2">
+                                        <TextDecoration.Pen>
+                                            <Pen Thickness="1" Brush="{DynamicResource Foreground_ExplorerNodeDefault}" />
+                                        </TextDecoration.Pen>
+                                    </TextDecoration>
+                                </TextBlock.TextDecorations>
+                            </TextBlock>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True"/>
+                        <Condition Property="IsEnabled" Value="True"/>
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.Setters>
+                        <Setter Property="Foreground" Value="{DynamicResource Foreground_ExplorerNodeMouse}"/>
+                    </MultiTrigger.Setters>
+                </MultiTrigger>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsKeyboardFocused" Value="True"/>
+                        <Condition Property="IsEnabled" Value="True"/>
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.Setters>
+                        <Setter Property="Foreground" Value="{DynamicResource Foreground_ExplorerNodeMouse}"/>
+                        <Setter Property="BitmapEffect" Value="{DynamicResource FocusedVisualGlow}"/>
+                    </MultiTrigger.Setters>
+                </MultiTrigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource Background_ExplorerNodeEnabled}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource Foreground_ExplorerNodeEnabled}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid Grid.Row="0" x:Name="SearchListView">
+            <Grid.RenderTransform>
+                <ScaleTransform ScaleX="1" ScaleY="1" x:Name="ListViewTransform"/>
+            </Grid.RenderTransform>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Style="{DynamicResource MainScrollViewerStyle}" Margin="0,2,0,0">
+                <Grid Margin="50,7,0,0" DataContext="{Binding Path=.}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Grid.Row="0" FontSize="20" FontWeight="Bold">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}Search Results for &quot;{0}&quot;: {1} items">
+                                    <Binding Path="SearchText"/>
+                                    <Binding Path="Count"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+
+                        <Button Content="Switch to Explorer View" Style="{StaticResource SearchModeButton}" Margin="30,2,0,0" VerticalAlignment="Center"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type FacebookClient:SearchViewControl}}, Path=SwitchToPhotoExplorerCommand}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1">
+                        <FacebookClient:SearchContentControl Items="{Binding Friends}" ItemTemplate="{StaticResource FriendResultTemplate}"
+                            Title="Friends" ItemHeight="90" ItemWidth="90" ListHeight="100"/>
+                        <FacebookClient:SearchContentControl Items="{Binding Comments}" ItemTemplate="{StaticResource CommentResultTemplate}"
+                            Title="Comments" ItemHeight="80" ItemWidth="400" ListHeight="180"/>
+                        <FacebookClient:SearchContentControl Items="{Binding Posts}" ItemTemplate="{StaticResource PostResultTemplate}"
+                            Title="Status Updates" ItemHeight="80" ItemWidth="400" ListHeight="180"/>
+                        <FacebookClient:SearchContentControl Items="{Binding Photos}" ItemTemplate="{StaticResource PhotoResultTemplate}"
+                            Title="Photos" ItemHeight="90" ItemWidth="90" ListHeight="200"/>
+                        <FacebookClient:SearchContentControl Items="{Binding Albums}" ItemTemplate="{StaticResource AlbumResultTemplate}"
+                            Title="Albums" ItemHeight="220" ItemWidth="160" ListHeight="440"/>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+
+        <Grid x:Name="PhotoExplorerGrid" Visibility="Collapsed" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button Content="Switch to List View" Style="{StaticResource SearchModeButton}" Margin="10,0,0,0" VerticalAlignment="Bottom" 
+                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type FacebookClient:SearchViewControl}}, Path=SwitchToListViewCommand}"/>
+
+            <ClientManagerControls:PhotoExplorerControl x:Name="PhotoExplorer" Grid.Row="1"
+                FocusVisualStyle="{x:Null}" Focusable="True" KeyboardNavigation.IsTabStop="False" 
+                                                    LinePen="{DynamicResource Pen_ExplorerNodes}"/>
+        </Grid>
+    </Grid>
+</UserControl>

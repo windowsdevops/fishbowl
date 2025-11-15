@@ -1,0 +1,10 @@
+﻿<EffectControls:EffectExpander
+    EffectName="Invert Color"
+    x:Class="EffectControls.InvertColorControl"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:EffectControls="clr-namespace:EffectControls">
+</EffectControls:EffectExpander>
+
+
+

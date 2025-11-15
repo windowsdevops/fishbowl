@@ -1,0 +1,1106 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Facebook="clr-namespace:Contigo;assembly=Contigo"
+    xmlns:FacebookClient="clr-namespace:FacebookClient"
+    xmlns:ClientManager="clr-namespace:ClientManager;assembly=ClientManager" 
+    xmlns:ClientManagerData="clr-namespace:ClientManager.Data;assembly=ClientManager"
+    xmlns:ClientManagerView="clr-namespace:ClientManager.View;assembly=ClientManager"
+    xmlns:ClientManagerControls="clr-namespace:ClientManager.Controls;assembly=ClientManager">
+
+    <FacebookClient:DateTimeToStringConverter x:Key="DateTimeConverter" />
+    <FacebookClient:AgeOfPostConverter x:Key="AgeOfpostConverter" />
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <FacebookClient:AddConverter x:Key="AddConverter" />
+
+    <!--Adjust these colors if needed (depending on the chrome)-->
+    <SolidColorBrush x:Key="IconBackgroundBrush" Color="#FF404040" />
+    <SolidColorBrush x:Key="IconForegroundBrush" Color="#FFFFFFFF" />
+
+    <ItemsPanelTemplate x:Key="VirtualizedItemsPanelTemplate">
+        <VirtualizingStackPanel />
+    </ItemsPanelTemplate>
+
+    <!-- Main Content Container Style -->
+    <Style TargetType="{x:Type ClientManagerControls:MainContentContainer}">
+        <Style.Setters>
+            <Setter Property="Focusable" Value="True" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="KeyboardNavigation.IsTabStop" Value="False" />
+            <Setter Property="ClipToBounds" Value="True" />
+        </Style.Setters>
+    </Style>
+
+    <Style x:Key="ReadOnlyRichTextBox" TargetType="{x:Type RichTextBox}">
+        <Setter Property="IsDocumentEnabled" Value="True" />
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RichTextBox">
+                    <ScrollViewer x:Name="PART_ContentHost"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="NavigateLeftButtonTemplate" TargetType="RepeatButton">
+        <Grid x:Name="Root">
+            <Border BorderThickness="8" BorderBrush="Transparent" Background="Transparent"  >
+                <Viewbox Height="18"   Margin="0,-2,0,0">
+                    <Path x:Name="Arrow"
+                  Fill="Gray"
+                  Stroke="Gray"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Center"
+                  Width="25"
+                  Height="25"
+                  Data="M11.4999847412109,12.8989802002909C11.4999847412109,12.8989802002909,1.99993896484352,1.99997448921238,1.99993896484352,1.99997448921238C1.99993896484352,1.99997448921238,20.9999542236326,1.99997448921238,20.9999542236326,1.99997448921238C20.9999542236326,1.99997448921238,11.4999847412109,12.8989802002909,11.4999847412109,12.8989802002909z"
+                  RenderTransformOrigin="0.5,0.5"
+                  Margin="5,0,0,0"
+                  Cursor="Hand">
+                        <Path.RenderTransform>
+                            <RotateTransform Angle="90" />
+                        </Path.RenderTransform>
+
+                    </Path>
+                </Viewbox>
+            </Border>
+
+            <ContentPresenter Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
+
+    </ControlTemplate>
+
+    <Style x:Key="NavigateLeftButtonStyle" TargetType="RepeatButton">
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Height" Value="35" />
+        <Setter Property="Template" Value="{StaticResource NavigateLeftButtonTemplate}" />
+    </Style>
+
+
+    <ControlTemplate x:Key="NavigateRightButtonTemplate" TargetType="RepeatButton">
+        <Grid x:Name="Root">
+            <Border BorderThickness="8" BorderBrush="Transparent" Background="Transparent"  >
+
+                <Viewbox Height="18" Margin="0,-4,0,0">
+                    <Path x:Name="Arrow"
+                  Fill="Gray"
+                  Stroke="Gray"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Center"
+                  Width="25"
+                  Height="25"
+                  Data="M11.4999847412109,12.8989802002909C11.4999847412109,12.8989802002909,1.99993896484352,1.99997448921238,1.99993896484352,1.99997448921238C1.99993896484352,1.99997448921238,20.9999542236326,1.99997448921238,20.9999542236326,1.99997448921238C20.9999542236326,1.99997448921238,11.4999847412109,12.8989802002909,11.4999847412109,12.8989802002909z"
+                  RenderTransformOrigin="0.5,0.5"
+                  Margin="5,0,0,0"
+                  Cursor="Hand">
+                        <Path.RenderTransform>
+                            <RotateTransform Angle="270" />
+                        </Path.RenderTransform>
+                    </Path>
+                </Viewbox>
+
+            </Border>
+
+            <ContentPresenter Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
+
+    </ControlTemplate>
+
+    <Style x:Key="NavigateRightButtonStyle" TargetType="RepeatButton">
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Height" Value="35" />
+        <Setter Property="Template" Value="{StaticResource NavigateRightButtonTemplate}" />
+    </Style>
+
+
+
+    <ControlTemplate x:Key="NavigateUpButtonTemplate" TargetType="RepeatButton">
+        <Grid x:Name="Root" >
+            <Border BorderThickness="8" BorderBrush="Transparent" Background="Transparent"  >
+                <StackPanel Orientation="Horizontal">
+                    <Viewbox Height="18" Margin="0,-5,0,0">
+                        <Path x:Name="Arrow"
+                  Fill="Gray"
+                  Stroke="Gray"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Center"
+                  Width="25"
+                  Height="25"
+                  Data="M11.4999847412109,12.8989802002909C11.4999847412109,12.8989802002909,1.99993896484352,1.99997448921238,1.99993896484352,1.99997448921238C1.99993896484352,1.99997448921238,20.9999542236326,1.99997448921238,20.9999542236326,1.99997448921238C20.9999542236326,1.99997448921238,11.4999847412109,12.8989802002909,11.4999847412109,12.8989802002909z"
+                  RenderTransformOrigin="0.5,0.5"
+                  Margin="5,0,0,0"
+                  Cursor="Hand">
+                            <Path.RenderTransform>
+                                <RotateTransform Angle="180" />
+                            </Path.RenderTransform>
+                        </Path>
+
+                    </Viewbox>
+                    <TextBlock Text="Previous Album" FontSize="13" Margin="5,4,0,0" />
+      
+		</StackPanel>
+            </Border>
+            <ContentPresenter Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
+
+    </ControlTemplate>
+
+    <Style x:Key="NavigateUpButtonStyle" TargetType="RepeatButton">
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Height" Value="38" />
+        <Setter Property="Template" Value="{StaticResource NavigateUpButtonTemplate}" />
+    </Style>
+
+
+    <ControlTemplate x:Key="NavigateDownButtonTemplate" TargetType="RepeatButton">
+        <Grid x:Name="Root">
+            <Border BorderThickness="8" BorderBrush="Transparent" Background="Transparent"  >
+                <StackPanel Orientation="Horizontal">
+                    <Viewbox Height="18" Margin="0,8,0,0">
+                        <Path x:Name="Arrow"
+                  Fill="Gray"
+                  Stroke="Gray"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Center"
+                  Width="25"
+                  Height="25"
+                  Data="M11.4999847412109,12.8989802002909C11.4999847412109,12.8989802002909,1.99993896484352,1.99997448921238,1.99993896484352,1.99997448921238C1.99993896484352,1.99997448921238,20.9999542236326,1.99997448921238,20.9999542236326,1.99997448921238C20.9999542236326,1.99997448921238,11.4999847412109,12.8989802002909,11.4999847412109,12.8989802002909z"
+                  RenderTransformOrigin="0.5,0.5"
+                  Margin="5,0,0,0"
+                  Cursor="Hand">
+                            <Path.RenderTransform>
+                                <RotateTransform Angle="0" />
+                            </Path.RenderTransform>
+                        </Path>
+                    </Viewbox>
+                    <TextBlock Text="Next Album" FontSize="13" Margin="5,3,0,0" />
+		</StackPanel>
+            </Border>
+
+            <ContentPresenter Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
+
+    </ControlTemplate>
+
+    <Style x:Key="NavigateDownButtonStyle" TargetType="RepeatButton">
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Height" Value="35" />
+        <Setter Property="Template" Value="{StaticResource NavigateDownButtonTemplate}" />
+    </Style>
+
+    <Style x:Key="SimpleUnderlineFocusVisual">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Control}">
+                    <Rectangle SnapsToDevicePixels="True" VerticalAlignment="Bottom" StrokeDashArray="1 3" 
+                        Height="1" StrokeThickness="1" Stroke="#60FFFFFF" Margin="10,0,10,0" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StandardButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Padding" Value="15,0,15,0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="MinWidth" Value="41" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Foreground" Value="#3b5998" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="FontFamily" Value="../Fonts/#Gotham" />
+        <Setter Property="FontSize" Value="14px" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource SimpleUnderlineFocusVisual}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid x:Name="Root" Background="Transparent" SnapsToDevicePixels="True" Margin="2" >
+                        <Grid Margin="-3,-3,-6,-6" Width="{Binding Path=ActualWidth, ElementName=Root}">
+                            <Grid x:Name="up">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="20" />
+                                </Grid.ColumnDefinitions>
+
+                                <Image Grid.Column="0" Source="../Images/Controls/button_left_up.png" Stretch="Fill" Margin="0,0,0,0" />
+                                <Image Grid.Column="1" Source="../Images/Controls/button_middle_up.png" Stretch="Fill"/>
+                                <Image Grid.Column="2" Source="../Images/Controls/button_right_up.png" Stretch="Fill" Margin="0,0,0,0" />
+                            </Grid>
+
+                            <Grid x:Name="hover" Opacity="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="20" />
+                                </Grid.ColumnDefinitions>
+
+                                <Image Grid.Column="0" Source="../Images/Controls/button_left_hover.png" Stretch="Fill" Margin="0,0,0,0" />
+                                <Image Grid.Column="1" Source="../Images/Controls/button_middle_hover.png" Stretch="Fill"/>
+                                <Image Grid.Column="2" Source="../Images/Controls/button_right_hover.png" Stretch="Fill" Margin="0,0,0,0" />
+                            </Grid>
+
+                            <Grid x:Name="down" Opacity="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="20" />
+                                </Grid.ColumnDefinitions>
+
+                                <Image Grid.Column="0" Source="../Images/Controls/button_left_down.png" Stretch="Fill" Margin="0,0,0,0" />
+                                <Image Grid.Column="1" Source="../Images/Controls/button_middle_down.png" Stretch="Fill"/>
+                                <Image Grid.Column="2" Source="../Images/Controls/button_right_down.png" Stretch="Fill" Margin="0,0,0,0" />
+                            </Grid>
+                        </Grid>
+
+                        <ContentPresenter x:Name="Content" Content="{TemplateBinding Content}" Margin="{TemplateBinding Padding}" 
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <!--<DoubleAnimation To="0" Duration="0:0:0.3" Storyboard.TargetName="up" Storyboard.TargetProperty="Opacity" />-->
+                                        <DoubleAnimation To="1" Duration="0:0:0.3" Storyboard.TargetName="Root" Storyboard.TargetProperty="Opacity" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <!--<DoubleAnimation To="1" Duration="0:0:0.4" Storyboard.TargetName="up" Storyboard.TargetProperty="Opacity" />-->
+                                        <DoubleAnimation To=".6" Duration="0:0:0.4" Storyboard.TargetName="Root" Storyboard.TargetProperty="Opacity" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <!--<DoubleAnimation To="0" Duration="0:0:0.3" Storyboard.TargetName="up" Storyboard.TargetProperty="Opacity" />-->
+                                        <DoubleAnimation To="1" Duration="0:0:0.3" Storyboard.TargetName="hover" Storyboard.TargetProperty="Opacity" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <!--<DoubleAnimation To="1" Duration="0:0:0.4" Storyboard.TargetName="up" Storyboard.TargetProperty="Opacity" />-->
+                                        <DoubleAnimation To="0" Duration="0:0:0.4" Storyboard.TargetName="hover" Storyboard.TargetProperty="Opacity" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation To="1" Duration="0:0:0.3" Storyboard.TargetName="down" Storyboard.TargetProperty="Opacity" />
+                                        <!--<DoubleAnimation To="0" Duration="0:0:0.2" Storyboard.TargetName="hover" Storyboard.TargetProperty="Opacity" />-->
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation To="0" Duration="0:0:0.4" Storyboard.TargetName="down" Storyboard.TargetProperty="Opacity" />
+                                        <!--<DoubleAnimation To="1" Duration="0:0:0.3" Storyboard.TargetName="hover" Storyboard.TargetProperty="Opacity" />-->
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style x:Key="ExitButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Padding" Value="10,0,10,0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="MinWidth" Value="41" />
+        <Setter Property="Height" Value="30" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Foreground" Value="DarkGray" />
+        <Setter Property="Background" Value="Black" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="FontFamily" Value="../Fonts/#Gotham" />
+        <Setter Property="FontSize" Value="14px" />
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource SimpleUnderlineFocusVisual}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid  x:Name="RootGrid" Opacity=".4" >
+
+                    <ContentPresenter x:Name="Content" Content="{TemplateBinding Content}" Margin="{TemplateBinding Padding}" 
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation To="1" Duration="0:0:0.3" Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Opacity" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation To=".4" Duration="0:0:0.4" Storyboard.TargetName="RootGrid" Storyboard.TargetProperty="Opacity" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                       
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SimpleButtonStyle" TargetType="{x:Type Button}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type Button}">
+          <ContentPresenter />
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <Trigger Property="IsEnabled" Value="True">
+        <Setter Property="Cursor" Value="Hand" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+
+  <Style x:Key="SimpleRepeatButtonStyle" TargetType="{x:Type RepeatButton}">
+    <Setter Property="Template">
+      <Setter.Value>
+        <ControlTemplate TargetType="{x:Type RepeatButton}">
+          <ContentPresenter />
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
+    <Style.Triggers>
+      <Trigger Property="IsEnabled" Value="True">
+        <Setter Property="Cursor" Value="Hand" />
+      </Trigger>
+    </Style.Triggers>
+  </Style>
+  <!-- Animated Item -->
+    <Style x:Key="AnimatedItemButton" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Panel.ZIndex" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Border x:Name="EffectTarget" Background="#FFFFFFFF" CornerRadius="3" BorderThickness="0" Visibility="Collapsed" Margin="5">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="0" ShadowDepth="0" Color="#FF3B5998" Opacity=".5" />
+                            </Border.Effect>
+                        </Border>
+                        <Border x:Name="ButtonBorder" CornerRadius="3" BorderThickness="0">
+                            <ContentPresenter Focusable="False" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="ButtonBorder">
+                            <BeginStoryboard>
+                                <Storyboard >
+                                    <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectTarget" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                        <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}" />
+                                    </ObjectAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectTarget" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.0000000" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectTarget" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.0000000" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectTarget" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.0900000" Value="3"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectTarget" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.0900000" Value="3"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectTarget" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="8"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectTarget" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="8"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="ButtonBorder">
+                            <BeginStoryboard>
+                                <Storyboard >
+                                    <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectTarget" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                        <DiscreteObjectKeyFrame KeyTime="00:00:00.22" Value="{x:Static Visibility.Collapsed}" />
+                                    </ObjectAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectTarget" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00" Value="8"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectTarget" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00" Value="8"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectTarget" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.0900000" Value="3"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectTarget" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.0900000" Value="3"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectTarget" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectTarget" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>
+                    <!--<ControlTemplate.Triggers>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="True" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.EnterActions>
+                      <BeginStoryboard>
+                          <Storyboard>
+                              <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                             Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
+                                                             Storyboard.TargetName="ButtonBorder">
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00"
+                                                            Value="1"
+                                                            KeySpline="0,0,0.875,1" />
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.0400000"
+                                                            Value="1.25"
+                                                            KeySpline="0.125,0,0.875,1" />
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.0700000"
+                                                            Value="1.15" />
+                                  </DoubleAnimationUsingKeyFrames>
+                                  <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
+                                                                 Storyboard.TargetName="ButtonBorder">
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00"
+                                                            Value="1"
+                                                            KeySpline="0,0,0.875,1" />
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.0400000"
+                                                            Value="1.25"
+                                                            KeySpline="0.125,0,0.875,1" />
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.0700000"
+                                                            Value="1.15" />
+                                  </DoubleAnimationUsingKeyFrames>
+                              </Storyboard>
+                          </BeginStoryboard>
+                      </MultiDataTrigger.EnterActions>
+                      <MultiDataTrigger.ExitActions>
+                          <BeginStoryboard>
+                              <Storyboard>
+                                  <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
+                                                                 Storyboard.TargetName="ButtonBorder">
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.1500000"
+                                                            Value="1"
+                                                            KeySpline="0,0,0.875,1" />
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.2200000"
+                                                            Value="1.025"
+                                                            KeySpline="0,0,0.875,1" />
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.3000000"
+                                                            Value="1" />
+                                  </DoubleAnimationUsingKeyFrames>
+                                  <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
+                                                                 Storyboard.TargetName="ButtonBorder">
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.1500000"
+                                                            Value="1"
+                                                            KeySpline="0,0,0.875,1" />
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.2200000"
+                                                            Value="1.025"
+                                                            KeySpline="0,0,0.875,1" />
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.3000000"
+                                                            Value="1" />
+                                  </DoubleAnimationUsingKeyFrames>
+                              </Storyboard>
+                          </BeginStoryboard>
+                      </MultiDataTrigger.ExitActions>
+                  </MultiDataTrigger>
+                  <MultiDataTrigger>
+                      <MultiDataTrigger.Conditions>
+                          <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsKeyboardFocused}"
+                                     Value="True" />
+                      </MultiDataTrigger.Conditions>
+                      <MultiDataTrigger.EnterActions>
+                          <BeginStoryboard>
+                              <Storyboard>
+                                  <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
+                                                                 Storyboard.TargetName="ButtonBorder">
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00"
+                                                            Value="1"
+                                                            KeySpline="0,0,0.875,1" />
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.0400000"
+                                                            Value="1.25"
+                                                            KeySpline="0.125,0,0.875,1" />
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.0700000"
+                                                            Value="1.15" />
+                                  </DoubleAnimationUsingKeyFrames>
+                                  <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                                 Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
+                                                                 Storyboard.TargetName="ButtonBorder">
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00"
+                                                            Value="1"
+                                                            KeySpline="0,0,0.875,1" />
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.0400000"
+                                                            Value="1.25"
+                                                            KeySpline="0.125,0,0.875,1" />
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.0700000"
+                                                            Value="1.15" />
+                                  </DoubleAnimationUsingKeyFrames>
+                              </Storyboard>
+                          </BeginStoryboard>
+                      </MultiDataTrigger.EnterActions>
+                      <MultiDataTrigger.ExitActions>
+                        
+                          <BeginStoryboard>
+                              <Storyboard>
+                                  <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)"
+                                                                 Storyboard.TargetName="ButtonBorder">
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.1500000"
+                                                            Value="1"
+                                                            KeySpline="0,0,0.875,1" />
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.2200000"
+                                                            Value="1.025"
+                                                            KeySpline="0,0,0.875,1" />
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.3000000"
+                                                            Value="1" />
+                                  </DoubleAnimationUsingKeyFrames>
+                                  <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)"
+                                                                 Storyboard.TargetName="ButtonBorder">
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.1500000"
+                                                            Value="1"
+                                                            KeySpline="0,0,0.875,1" />
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.2200000"
+                                                            Value="1.025"
+                                                            KeySpline="0,0,0.875,1" />
+                                      <SplineDoubleKeyFrame KeyTime="00:00:00.3000000"
+                                                            Value="1" />
+                                  </DoubleAnimationUsingKeyFrames>
+                              </Storyboard>
+                          </BeginStoryboard>
+                      </MultiDataTrigger.ExitActions>
+                  </MultiDataTrigger>
+              </ControlTemplate.Triggers>-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Animated Item -->
+    <Style x:Key="AnimatedAlbumItemButton" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Panel.ZIndex" Value="1"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="ButtonBorder" RenderTransformOrigin="0.5,0.5" CornerRadius="3" BorderThickness="0">
+                        <Border.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1" ScaleY="1" />
+                            </TransformGroup>
+                        </Border.RenderTransform>
+
+                        <ContentPresenter Focusable="False" />
+                    </Border>
+                    <!--<ControlTemplate.Triggers>
+                        <EventTrigger RoutedEvent="Mouse.MouseEnter" SourceName="ButtonBorder">
+                            <BeginStoryboard>
+                                <Storyboard >
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.0000000" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.0000000" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.0900000" Value="3"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.0900000" Value="3"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="6"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="6"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="Mouse.MouseLeave" SourceName="ButtonBorder">
+                            <BeginStoryboard>
+                                <Storyboard >
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.0000000" Value="6"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.0000000" Value="6"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.0900000" Value="3"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.0900000" Value="3"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ButtonBorder" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                        <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="0"/>
+                                    </DoubleAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </ControlTemplate.Triggers>-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <!-- Large Photo Thumbnail Template -->
+    <Style TargetType="{x:Type ClientManagerControls:LargePhotoThumbnailControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ClientManagerControls:LargePhotoThumbnailControl}">
+                    <Viewbox Stretch="UniformToFill"
+                             DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=.}"
+                             Height="{TemplateBinding Height}"
+                             Width="{TemplateBinding Width}">
+                        <Grid>
+                            <Image Source="{Binding Path=ImageSource}" Name="ThumbnailTransform" />
+                            <Image Name="PlaceholderImage" Visibility="Collapsed"/>
+                        </Grid>
+                    </Viewbox>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=ImageSource}" Value="{x:Null}">
+                            <Setter TargetName="ThumbnailTransform" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="PlaceholderImage" Property="Source" Value="pack://application:,,,/Resources/Images/placeholderphoto3.png"/>
+                            <Setter TargetName="PlaceholderImage" Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ListBoxItem that cannot be selected by the keyboard -->
+    <Style TargetType="{x:Type ListBoxItem}"
+           x:Key="UnselectableListBoxItem">
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}" />
+        <Setter Property="Focusable"
+                Value="False" />
+    </Style>
+
+    <!-- SlideShowControl default style -->
+    <Style TargetType="{x:Type FacebookClient:PhotoSlideShowControl}">
+        <Setter Property="Template"
+                Value="{DynamicResource PhotoSlideShowTemplate}" />
+    </Style>
+
+    <Storyboard x:Key="PhotoNavigationButtonMouseOverStoryboard">
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="IsMouseOver"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00.2000000"
+                                  Value="1" />
+        </DoubleAnimationUsingKeyFrames>
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="Normal"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00.2000000"
+                                  Value="0" />
+        </DoubleAnimationUsingKeyFrames>
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="Disabled"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00.2000000"
+                                  Value="0" />
+        </DoubleAnimationUsingKeyFrames>
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="Pressed"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00.2000000"
+                                  Value="0" />
+        </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <Storyboard x:Key="PhotoNavigationButtonPressedStoryboard">
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="Pressed"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00.2000000"
+                                  Value="1" />
+        </DoubleAnimationUsingKeyFrames>
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="IsMouseOver"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00.2000000"
+                                  Value="0" />
+        </DoubleAnimationUsingKeyFrames>
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="Normal"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00.2000000"
+                                  Value="0" />
+        </DoubleAnimationUsingKeyFrames>
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="Disabled"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00.2000000"
+                                  Value="0" />
+        </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <Storyboard x:Key="PhotoNavigationButtonNormalStoryboard">
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="Normal"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00.2000000"
+                                  Value="1" />
+        </DoubleAnimationUsingKeyFrames>
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="Disabled"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00.2000000"
+                                  Value="0" />
+        </DoubleAnimationUsingKeyFrames>
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="IsMouseOver"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00.2000000"
+                                  Value="0" />
+        </DoubleAnimationUsingKeyFrames>
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="Pressed"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00.2000000"
+                                  Value="0" />
+        </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <Storyboard x:Key="PhotoNavigationButtonDisabledStoryboard">
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="Normal"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00.0000000"
+                                  Value="0" />
+        </DoubleAnimationUsingKeyFrames>
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="Disabled"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00.0000000"
+                                  Value="1" />
+        </DoubleAnimationUsingKeyFrames>
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="IsMouseOver"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00.0000000"
+                                  Value="0" />
+        </DoubleAnimationUsingKeyFrames>
+        <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                       Storyboard.TargetName="Pressed"
+                                       Storyboard.TargetProperty="(UIElement.Opacity)">
+            <SplineDoubleKeyFrame KeyTime="00:00:00.0000000"
+                                  Value="0" />
+        </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <Style x:Key="BottomBorderSeparationStyle"
+           TargetType="{x:Type Border}">
+        <Setter Property="Background"
+                Value="#FF353535" />
+        <Setter Property="BorderBrush"
+                Value="#FF000000" />
+        <Setter Property="BorderThickness"
+                Value="1,0,0,0" />
+        <Setter Property="Margin"
+                Value="0,1,0,0" />
+        <Setter Property="Width"
+                Value="2" />
+    </Style>
+
+    <!-- Image Thumbnail Template -->
+    <!--<Style TargetType="{x:Type ClientManagerControls:ImageThumbnailControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ClientManagerControls:ImageThumbnailControl}">
+                    <Viewbox Stretch="UniformToFill"
+                             DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=.}"
+                             Height="{TemplateBinding Height}"
+                             Width="{TemplateBinding Width}">
+                        <Viewbox.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1"
+                                                ScaleY="1" />
+                            </TransformGroup>
+                        </Viewbox.RenderTransform>
+                        <Grid>
+                            <Image Source="{Binding Path=ImageSource}"
+                                   Name="ThumbnailTransform" />
+                            <Image Source="pack://application:,,,/Resources/Images/placeholderprofilephoto-square.png"
+                                   Name="PlaceholderImage"
+                                   Visibility="Collapsed"/>
+                        </Grid>
+                    </Viewbox>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=ImageSource}" Value="{x:Null}">
+                            <Setter TargetName="ThumbnailTransform" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="PlaceholderImage" Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=ImageSource}"
+                         Value="{x:Null}">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                             To="0"
+                                             Duration="0" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="00:00:00.15"
+                                             AccelerationRatio="0.4"
+                                             DecelerationRatio="0.2" />
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                           Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00"
+                                                      Value="0.5"
+                                                      KeySpline="0,0,0.875,1" />
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000"
+                                                      Value="1.25"
+                                                      KeySpline="0.125,0,0.875,1" />
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.1500000"
+                                                      Value="1.0" />
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                           Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00"
+                                                      Value="0.5"
+                                                      KeySpline="0,0,0.875,1" />
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000"
+                                                      Value="1.25"
+                                                      KeySpline="0.125,0,0.875,1" />
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.1500000"
+                                                      Value="1.0" />
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>-->
+
+    <!-- Large Image Thumbnail Template
+    <Style TargetType="{x:Type ClientManagerControls:LargeImageThumbnailControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ClientManagerControls:LargeImageThumbnailControl}">
+                    <Viewbox Stretch="UniformToFill"
+                             DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=.}"
+                             Height="{TemplateBinding Height}"
+                             Width="{TemplateBinding Width}">
+                        <Viewbox.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="1"
+                                                ScaleY="1" />
+                            </TransformGroup>
+                        </Viewbox.RenderTransform>
+                        <Grid>
+                            <Image Source="{Binding Path=ImageSource}"
+                                   Name="ThumbnailTransform" />
+                            <Image Source="pack://application:,,,/Resources/Images/placeholderprofilephoto.png"
+                                   Name="PlaceholderImage"
+                                   Visibility="Collapsed"/>
+                        </Grid>
+                    </Viewbox>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=ImageSource}" Value="{x:Null}">
+                            <Setter TargetName="ThumbnailTransform" Property="Visibility" Value="Collapsed"/>
+                            <Setter TargetName="PlaceholderImage" Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=ImageSource}"
+                         Value="{x:Null}">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <! - -<DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                             To="0"
+                                             Duration="0" /> - - >
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+                <DataTrigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="00:00:00.15"
+                                             AccelerationRatio="0.4"
+                                             DecelerationRatio="0.2" />
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                           Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00"
+                                                      Value="0.5"
+                                                      KeySpline="0,0,0.875,1" />
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000"
+                                                      Value="1.25"
+                                                      KeySpline="0.125,0,0.875,1" />
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.1500000"
+                                                      Value="1.0" />
+                            </DoubleAnimationUsingKeyFrames>
+                            <DoubleAnimationUsingKeyFrames BeginTime="00:00:00"
+                                                           Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                                <SplineDoubleKeyFrame KeyTime="00:00:00"
+                                                      Value="0.5"
+                                                      KeySpline="0,0,0.875,1" />
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.1000000"
+                                                      Value="1.25"
+                                                      KeySpline="0.125,0,0.875,1" />
+                                <SplineDoubleKeyFrame KeyTime="00:00:00.1500000"
+                                                      Value="1.0" />
+                            </DoubleAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.ExitActions>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+  -->
+
+    <!-- Photo Album Base Template -->
+    <DataTemplate DataType="{x:Type Facebook:FacebookPhotoAlbum}">
+        <FacebookClient:PhotoAlbumControl x:Name="PhotoAlbumControl" PhotoAlbum="{Binding Path=.}" FocusVisualStyle="{x:Null}" />
+    </DataTemplate>
+
+    <!-- Photo Viewer Base Template -->
+    <DataTemplate DataType="{x:Type Facebook:FacebookPhoto}">
+        <FacebookClient:PhotoViewerControl FacebookPhoto="{Binding}" />
+    </DataTemplate>
+
+    <!-- Slide Show Base Template -->
+    <DataTemplate DataType="{x:Type ClientManagerView:SlideShow}">
+        <FacebookClient:PhotoSlideShowControl SlideShow="{Binding}" />
+    </DataTemplate>
+
+    <!-- Friend viewer template -->
+    <DataTemplate DataType="{x:Type Facebook:FacebookContact}">
+        <FacebookClient:FriendViewerControl FacebookContact="{Binding}" />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type Facebook:SearchResults}">
+        <FacebookClient:SearchViewControl DataContext="{Binding}"/>
+    </DataTemplate>
+
+    <!-- Missing Item Error Template -->
+    <DataTemplate DataType="{x:Type ClientManagerData:MissingItemError}">
+        <Grid>
+            <Image Source="pack://application:,,,/Resources/Images/bg01.jpg"
+                   Height="80"
+                   Opacity=".1" />
+            <StackPanel VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                <TextBlock Foreground="#DDDDDD"
+                           Margin="20,5,10,5"
+                           VerticalAlignment="Center"
+                           TextAlignment="Center"
+                           FontSize="18pt"
+                           Text="Oops! We can't find the item you were looking for."
+                           TextWrapping="Wrap" />
+                <TextBlock Foreground="#DDDDDD"
+                           Margin="0,5,0,25"
+                           VerticalAlignment="Center"
+                           Text="{Binding Path=Message}"
+                           TextAlignment="Center"
+                           FontSize="10pt" />
+                <Button HorizontalAlignment="Center"
+                        Command="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=NavigationCommands.NavigateToFirstPhotoGalleryCommand}">Return Home</Button>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+
+    <Style x:Key="{x:Type ToolTip}" TargetType="ToolTip">
+        <Setter Property="OverridesDefaultStyle" Value="true"/>
+        <Setter Property="FontFamily" Value="{DynamicResource SerifFont}" />
+        <Setter Property="FontSize" Value="12px"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToolTip">
+                    <Border CornerRadius="3" Background="{DynamicResource TooltipBackgroundBrush}" BorderThickness="1" Padding="10,3,10,3" BorderBrush="#FF7494C0" SnapsToDevicePixels="True" >
+                        <!--<Border.Background>
+                            <LinearGradientBrush StartPoint="0,1" EndPoint="0,0">
+                                <GradientStop Color="#DF35528C" Offset="0.25"/>
+                                <GradientStop Color="#8F35528C" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>-->
+                        <Grid>
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

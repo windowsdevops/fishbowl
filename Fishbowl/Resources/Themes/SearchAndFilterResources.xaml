@@ -1,0 +1,183 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ClientManager="clr-namespace:ClientManager;assembly=ClientManager">
+
+    <LinearGradientBrush x:Key="SearchAndFilterBarShadowBrush"
+                         EndPoint="0,0"
+                         StartPoint="1,0">
+        <GradientStop Color="#E5000000"
+                      Offset="0" />
+        <GradientStop Color="#00000000"
+                      Offset="1" />
+    </LinearGradientBrush>
+
+    <Style x:Key="SearchAndFilterBarShadowStyle"
+           TargetType="Rectangle">
+        <Setter Property="Width"
+                Value="15" />
+        <Setter Property="Fill"
+                Value="{DynamicResource SearchAndFilterBarShadowBrush}" />
+    </Style>
+
+    <Style x:Key="SearchAndFilterBarMainBorderStyle"
+           TargetType="Border">
+        <Setter Property="Background"
+                Value="{DynamicResource FilterControlBorderBackgroundBrush}" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource FilterControlBorderBrush}" />
+        <Setter Property="BorderThickness"
+                Value="0,0,1,0" />
+    </Style>
+
+    <Style x:Key="SearchAndFilterBarSearchTextBoxStyle"
+           TargetType="TextBox"
+           BasedOn="{StaticResource ShareTextBoxDarkStyle}">
+        <Setter Property="FontFamily"
+                Value="{DynamicResource SansSerifFont}" />
+        <Setter Property="Width"
+                Value="190" />
+    </Style>
+
+    <Style x:Key="SearchAndFilterTopGridStyle"
+           TargetType="Grid">
+        <Setter Property="Margin"
+                Value="2,0,10,0" />
+        <Setter Property="Height"
+                Value="60" />
+    </Style>
+
+    <Style x:Key="SearchAndFilterHyperlinkStyle"
+           TargetType="Hyperlink">
+        <Setter Property="TextDecorations"
+                Value="{x:Null}" />
+        <Setter Property="TextBlock.Foreground" Value="Black" />
+    </Style>
+
+    <Style x:Key="SearchAndFilterTextStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="13px" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="FontFamily" Value="../Fonts/#Gotham" />
+        <Setter Property="TextBlock.Foreground" Value="#4a4a4a" />
+    </Style>
+
+    <Style x:Key="SearchAndFilterDarkTextStyle"
+           TargetType="{x:Type TextBlock}"
+           BasedOn="{StaticResource SearchAndFilterTextStyle}">
+        <Setter Property="Opacity"
+                Value="0.75" />
+    </Style>
+
+    <Style x:Key="SearchAndFilterTreeViewItemHeaderStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#4B4B4B" />
+        <Setter Property="FontSize" Value="13px" />
+        <Setter Property="FontStyle" Value="Italic" />
+        <Setter Property="FontWeight" Value="Light" />
+        <Setter Property="FontFamily" Value="../Fonts/#Gotham" />
+    </Style>
+
+    <Style x:Key="SearchAndFilterTreeViewStyle" TargetType="{x:Type TreeView}">
+        <Style.Resources>
+            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Black" />
+            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Black" />
+        </Style.Resources>
+
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TreeView}">
+                    <Border x:Name="Bd" SnapsToDevicePixels="true" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <ScrollViewer Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" Focusable="false" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" CanContentScroll="false" HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" Style="{DynamicResource MainScrollViewerStyle}">
+                            <ItemsPresenter />
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="{x:Null}" />
+    </Style>
+
+    <Style x:Key="FilterButtonStyle" TargetType="{x:Type RadioButton}">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Height" Value="25" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="TextBlock.Foreground" Value="#4a4a4a" />
+        <Setter Property="TextBlock.FontSize" Value="13px" />
+        <Setter Property="TextBlock.FontFamily" Value="../Fonts/#Gotham" />
+        <Setter Property="TextBlock.FontWeight" Value="Light" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RadioButton}">
+                    <Grid x:Name="Root" Background="Transparent">
+                        
+                        <Rectangle x:Name="Selected" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  
+                               Fill="{DynamicResource FilterButtonSelectedBrush}" RadiusX="3" RadiusY="3" Opacity="0" Margin="0,0,5,0" />
+                        
+                        <Rectangle x:Name="Hover" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  
+                               Fill="#3b5998" RadiusX="3" RadiusY="3" Opacity="0" Margin="0,0,5,0" />
+
+                        <ContentPresenter HorizontalAlignment="Left" Margin="5,0,5,0" VerticalAlignment="Center" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="Root" Value="0.4" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="TextBlock.Foreground" Value="#FFFFFF" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation To="1" Duration="0:0:0.3" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Selected" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation To="0" Duration="0:0:0.3" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Selected" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="TextBlock.Foreground" Value="#FFFFFF" />
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation To=".5" Duration="0:0:0.3" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Hover" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation To="0" Duration="0:0:0.3" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Hover" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <DataTemplate x:Key="SearchAndFilterItemTemplate">
+        <ToggleButton Style="{DynamicResource FilterButtonStyle}" Width="150"
+                 Command="{Binding Command}" CommandParameter="{Binding CommandParameter}">
+            <TextBlock Text="{Binding Name}" />
+        </ToggleButton>
+    </DataTemplate>
+
+    <Style x:Key="SearchAndFilterTreeViewItemStyle"
+           TargetType="{x:Type TreeViewItem}"
+           BasedOn="{StaticResource TocTreeViewItemStyle}">
+    </Style>
+
+</ResourceDictionary>

@@ -1,0 +1,36 @@
+﻿<Application x:Class="FacebookClient.FacebookClientApplication"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    ShutdownMode="OnMainWindowClose">
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/BaseResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/DrawingResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/MainPageResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/MainScrollViewerResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/ActivityPostResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/NewsFeedResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/FriendBarResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/ApplicationBarResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/TocBarResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/SearchAndFilterResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/FriendSummaryResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/IconNotificationButtonResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/PhotoUploadWizardResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/ButtonStyles.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/ColorResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/SlideShowResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/FlowViewerResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/PhotoViewerResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/PhotoAlbumResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/FriendViewerResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/GalleryScrollViewer.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/GalleryHomeResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/SearchResultsResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/ShellResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/Zap.Generic.xaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>

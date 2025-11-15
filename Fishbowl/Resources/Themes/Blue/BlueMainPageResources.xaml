@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <LinearGradientBrush x:Key="ShareTextBoxDarkBackgroundBrush"
+                         EndPoint="0.5,1"
+                         StartPoint="0.5,0">
+    	<GradientStop Color="#FF25314C" Offset="0.028"/>
+    	<GradientStop Color="#FF35466D" Offset="0.038"/>
+    	<GradientStop Color="#FF35466D" Offset="0.075"/>
+    	<GradientStop Color="#FF405583" Offset="0.085"/>
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="DarkTextBrush"
+                     Color="#FF9EB2D4" />
+
+    <SolidColorBrush x:Key="MediumTextBrush"
+                     Color="#FFB3B8C0" />
+
+    <SolidColorBrush x:Key="LightTextBrush"
+                     Color="#FFFFFFFF" />
+
+    <SolidColorBrush x:Key="MainContentGridBrush"
+                     Color="#FFC8D5E2" />
+
+    <LinearGradientBrush x:Key="BubbleButtonColorBackgroundBrush"
+                         EndPoint="0.5,3.06151588455594E-17"
+                         StartPoint="0.5,1">
+        <GradientStop Color="#FFAAD4FF"
+                      Offset="0" />
+        <GradientStop Color="#FF62A7EF"
+                      Offset="1" />
+    </LinearGradientBrush>
+
+    <SolidColorBrush x:Key="BubbleButtonColorStrokeBrush"
+                     Color="#FF393939" />
+
+  <system:Boolean x:Key="UseGlass">False</system:Boolean>
+
+</ResourceDictionary>

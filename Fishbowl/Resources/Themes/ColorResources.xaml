@@ -1,0 +1,41 @@
+<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:FacebookClient="clr-namespace:FacebookClient">
+
+  <!-- Foreground brush for text in top chrome -->
+  <SolidColorBrush x:Key="Foreground_ChromeText" Color="#FFE5E5E5" />
+
+  <!-- Override the default selection brush -->
+  <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#99777777"/>
+
+  <!-- Default foreground brush for content elements, e.g. text -->
+  <SolidColorBrush x:Key="Foreground_ContentElement" Color="#FF3B5998"/>
+
+  <!-- Default brush for content hightlights -->
+  <SolidColorBrush x:Key="Foreground_ContentHighlight" Color="#0099ff"/>
+
+  <!-- Item outline brush -->
+  <SolidColorBrush x:Key="Border_ItemOutline" Color="#444444" />
+
+  <!-- Item outline brush thickness -->
+  <Thickness x:Key="Border_ItemOutline_Thickness">1</Thickness>
+
+  <!-- Photo Viewer Colors -->
+  <SolidColorBrush x:Key="Background_PhotoViewerDefault" Color="#444444" />
+  <SolidColorBrush x:Key="Background_PhotoViewerOver" Color="#696969" />
+  <SolidColorBrush x:Key="Background_PhotoViewerPressed" Color="#909090" />
+  <SolidColorBrush x:Key="Background_PhotoViewerChecked" Color="#555555" />
+
+  <!-- Explorer Colors -->
+  <Pen x:Key="Pen_ExplorerNodes" Brush="#403b5998" Thickness="1"/>
+  <SolidColorBrush x:Key="Background_ExplorerNode" Color="#3b5998" />
+  <SolidColorBrush x:Key="Border_ExplorerNode" Color="#666666" />
+  <SolidColorBrush x:Key="Background_ExplorerNodeEnabled" Color="#BBBBBB" />
+  <SolidColorBrush x:Key="Foreground_ExplorerNodeEnabled" Color="#333333" />
+  <SolidColorBrush x:Key="Foreground_ExplorerNodeDefault" Color="#666666" />
+  <SolidColorBrush x:Key="Foreground_ExplorerNodeMouse" Color="#3b5998" />
+
+  <!-- Glow for keyboard focused visuals -->
+  <OuterGlowBitmapEffect x:Key="FocusedVisualGlow" GlowSize="6" GlowColor="#ffffff" Opacity="0.75"/>
+</ResourceDictionary>

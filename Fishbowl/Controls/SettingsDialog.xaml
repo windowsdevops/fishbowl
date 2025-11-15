@@ -1,0 +1,45 @@
+﻿<UserControl
+  x:Class="FacebookClient.SettingsDialog"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:FacebookClient="clr-namespace:FacebookClient"
+  Loaded="_OnLoaded"
+  Unloaded="_OnUnloaded">
+    <Border Background="White" BorderBrush="DarkGray" BorderThickness="4" MinWidth="400" MinHeight="300">
+    <DockPanel>
+      <StackPanel DockPanel.Dock="Top" Background="{DynamicResource ApplicationBarBackground}" >
+        <Image Width="129" Height="19" Margin="4,6,4,0" Source="pack://application:,,,/Resources/Images/logo.png" VerticalAlignment="Center" HorizontalAlignment="Left" />
+        <TextBlock Margin="6,0,10,0" Foreground="White" FontSize="12" TextAlignment="Left" FontFamily="../Resources/Fonts/#Gotham" FontWeight="Light">
+          <Run>An experiment application by uxLabs@microsoft.</Run>
+          <LineBreak />
+          <Run>Find out more at </Run>
+          <Hyperlink Foreground="White" Click="_OnSupportWebsiteClicked">
+            <FacebookClient:BindableRun Text="{Binding Source={x:Static FacebookClient:FacebookClientApplication.SupportWebsite}, Path=OriginalString}" />
+          </Hyperlink>
+        </TextBlock>
+        <!-- Set in code behind. -->
+        <TextBlock x:Name="VersionInfoTextBlock" Margin="6,0,10,10" Foreground="White" FontSize="12" TextAlignment="Left" FontFamily="../Resources/Fonts/#Gotham" FontWeight="Light" />
+        <TextBlock Margin="6" Foreground="White" FontSize="18" TextAlignment="Left" FontFamily="../Resources/Fonts/#Gotham" FontWeight="Bold">Settings</TextBlock>
+      </StackPanel>
+      <DockPanel DockPanel.Dock="Bottom">
+        <Button DockPanel.Dock="Right" Margin="5" Style="{DynamicResource StandardButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Close" Click="_OnClose" />
+        <TextBlock Margin="5" FontSize="12" VerticalAlignment="Bottom" HorizontalAlignment="Left" TextAlignment="Left" FontFamily="../Resources/Fonts/#Gotham" FontWeight="Light">
+          <Hyperlink Click="_OnPrivacyWebsiteClicked">Privacy statement</Hyperlink>
+        </TextBlock>
+      </DockPanel>
+      <ScrollViewer VerticalScrollBarVisibility="Hidden">
+        <StackPanel Margin="10" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top">
+          <Button x:Name="ClearCacheButton" Click="_OnClearCacheButtonClicked" Margin="5,2" Style="{DynamicResource StandardButtonStyle}" Width="Auto" HorizontalAlignment="Left" Content="Clear Image Cache" />
+          <TextBlock x:Name="ClearCacheInfoTextBlock" Margin="5,2"  Foreground="Gray" TextAlignment="Right" FontStyle="Italic">(Images will be purged when the application next shuts down)</TextBlock>
+          <StackPanel Orientation="Horizontal">
+            <Label Margin="10,2">Visual Style</Label>
+            <ComboBox x:Name="VisualStyleBox" Margin="0,2"/>
+          </StackPanel>
+          <CheckBox x:Name="DisableUpdatesCheckBox" Margin="10,2">Disable automatic updates</CheckBox>
+          <CheckBox x:Name="OpenPagesInBrowserCheckBox" Margin="10,2">Open web content in external browser</CheckBox>
+          <CheckBox x:Name="KeepMiniModeOnTopCheckBox" Margin="10,2">Keep the mini-mode window on top of all others.</CheckBox>
+        </StackPanel>
+      </ScrollViewer>
+    </DockPanel>
+  </Border>
+</UserControl>

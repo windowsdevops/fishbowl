@@ -1,0 +1,185 @@
+﻿<NavigationWindow
+    x:Class="FacebookClient.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:ClientManager="clr-namespace:ClientManager;assembly=ClientManager"
+    xmlns:ClientManagerControls="clr-namespace:ClientManager.Controls;assembly=ClientManager"
+    xmlns:Facebook="clr-namespace:Contigo;assembly=Contigo"
+    xmlns:FacebookClient="clr-namespace:FacebookClient"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:Properties="clr-namespace:FacebookClient.Properties"
+    xmlns:shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero"
+    Width="1000" Height="600"
+    MinWidth="600" MinHeight="280"
+    AllowDrop="True"
+    Background="White"
+    ShowsNavigationUI="False"
+    Title="Fishbowl for Facebook - Preview"
+    mc:Ignorable="PresentationOptions" 
+    diag:PresentationTraceSources.TraceLevel="High">
+  
+  <NavigationWindow.Style>
+    <Style TargetType="{x:Type FacebookClient:MainWindow}" >
+      <Setter Property="HwndBackgroundBrush" Value="Black" />
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=Dialog}" Value="{x:Null}">
+          <Setter Property="HwndBackgroundBrush" Value="White" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+  </NavigationWindow.Style>
+  
+  <TaskbarItemInfo.TaskbarItemInfo>
+    <TaskbarItemInfo
+        ThumbnailClipMargin="0,85,0,0"
+        Overlay="{Binding ElementName=Footer, Path=NotificationControl.ImageSource}">
+      <TaskbarItemInfo.ThumbButtonInfos>
+        <ThumbButtonInfoCollection>
+          <ThumbButtonInfo Command="{Binding Path=NavigationCommands.NavigateHomeCommand, Source={x:Static ClientManager:ServiceProvider.ViewManager}}" Description="See what's new with your friends">
+            <ThumbButtonInfo.ImageSource>
+              <DrawingImage Drawing="{Binding Source={StaticResource Home3DrawingBrush}, Path=Drawing}"/>
+            </ThumbButtonInfo.ImageSource>
+          </ThumbButtonInfo>
+          <ThumbButtonInfo Command="{Binding Path=NavigationCommands.NavigateFriendsCommand, Source={x:Static ClientManager:ServiceProvider.ViewManager}}" Description="Check in on your friends">
+            <ThumbButtonInfo.ImageSource>
+              <DrawingImage Drawing="{Binding Source={StaticResource StackedBuddies2DrawingBrush}, Path=Drawing}"/>
+            </ThumbButtonInfo.ImageSource>
+          </ThumbButtonInfo>
+          <ThumbButtonInfo Command="{Binding Path=NavigationCommands.NavigateProfileCommand, Source={x:Static ClientManager:ServiceProvider.ViewManager}}" Description="Check in on yourself">
+            <ThumbButtonInfo.ImageSource>
+              <DrawingImage Drawing="{Binding Source={StaticResource SingleBuddy2DrawingBrush}, Path=Drawing}"/>
+            </ThumbButtonInfo.ImageSource>
+          </ThumbButtonInfo>
+          <ThumbButtonInfo Command="{Binding Path=NavigationCommands.NavigatePhotoAlbumsCommand, Source={x:Static ClientManager:ServiceProvider.ViewManager}}" Description="See everyone's photos">
+            <ThumbButtonInfo.ImageSource>
+              <DrawingImage Drawing="{Binding Source={StaticResource PhotosDrawingBrush}, Path=Drawing}"/>
+            </ThumbButtonInfo.ImageSource>
+          </ThumbButtonInfo>
+          <ThumbButtonInfo IsBackgroundVisible="False" IsEnabled="False"/>
+          <ThumbButtonInfo Command="{Binding Path=NavigationCommands.NavigateToContentCommand, Source={x:Static ClientManager:ServiceProvider.ViewManager}}" CommandParameter="[CurrentNavigator]" Description="Go to Facebook">
+            <ThumbButtonInfo.ImageSource>
+              <DrawingImage Drawing="{Binding Source={StaticResource FacebookDrawingBrush}, Path=Drawing}" />
+            </ThumbButtonInfo.ImageSource>
+          </ThumbButtonInfo>
+        </ThumbButtonInfoCollection>
+      </TaskbarItemInfo.ThumbButtonInfos>
+    </TaskbarItemInfo>
+  </TaskbarItemInfo.TaskbarItemInfo>
+  
+  <NavigationWindow.Content>
+    <Grid x:Name="NavigationRoot">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+
+      <ClientManagerControls:MainContentContainer x:Name="ContentPane" Grid.Row="1"
+          KeyboardNavigation.DirectionalNavigation="None"
+          KeyboardNavigation.IsTabStop="False"/>
+        
+      <Image x:Name="HeaderShadow"
+        Height="6"
+        Grid.Row="1"
+        VerticalAlignment="Top"
+        Source="Resources/Images/main_header_shadow.png"
+        Stretch="Fill"
+        Visibility="{Binding NavigationUIVisibility, RelativeSource={RelativeSource AncestorType={x:Type FacebookClient:MainWindow}}}"/>
+
+      <Image x:Name="FooterShadow"
+        Height="4"
+        Grid.Row="1"
+        VerticalAlignment="Bottom"
+        Source="Resources/Images/main_header_shadow.png"
+        Stretch="Fill"
+        RenderTransformOrigin=".5,.5"
+        Visibility="{Binding NavigationUIVisibility, RelativeSource={RelativeSource AncestorType={x:Type FacebookClient:MainWindow}}}">
+        <Image.RenderTransform>
+          <ScaleTransform ScaleY="-1"/>
+        </Image.RenderTransform>
+      </Image>
+
+      <FacebookClient:MainHeaderControl Grid.Row="0" x:Name="Header"/>
+      
+      <FacebookClient:FooterControl Grid.Row="2" x:Name="Footer"/>
+
+      <FacebookClient:BuddyListControl Grid.Row="1" 
+          VerticalAlignment="Bottom"
+          HorizontalAlignment="Right" 
+          IsDisplayed="{Binding ElementName=Footer, Path=IsBuddyListToggled, Mode=TwoWay}"
+          RequestNavigate="_OnNotificationNavigationRequested"/>
+
+      <FacebookClient:NotificationsControl Grid.Row="1" 
+          VerticalAlignment="Bottom"
+          HorizontalAlignment="Right" 
+          IsDisplayed="{Binding ElementName=Footer, Path=AreNotificationsToggled, Mode=TwoWay}"
+          RequestNavigate="_OnNotificationNavigationRequested"/>
+
+      <FacebookClient:MessageNotificationsControl Grid.Row="1" 
+          VerticalAlignment="Bottom"
+          HorizontalAlignment="Right" 
+          IsDisplayed="{Binding ElementName=Footer, Path=IsInboxToggled, Mode=TwoWay}"
+          RequestNavigate="_OnMessageNavigationRequested"/>
+      
+      <!-- Modeless information bar.  Collapsed by default.  -->
+      <Border x:Name="GoldBarBorder" Grid.Row="1" 
+          VerticalAlignment="Bottom" 
+          Visibility="Collapsed"
+          Background="{Binding GoldBarBackgroundBrush, RelativeSource={RelativeSource AncestorType={x:Type FacebookClient:MainWindow}}}" 
+          BorderBrush="{Binding GoldBarBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type FacebookClient:MainWindow}}}"
+          BorderThickness="2"
+          CornerRadius="6,6,0,0" 
+          Margin="35,0,35,-2" 
+          MinHeight="20">
+        <DockPanel>
+          <Button 
+              DockPanel.Dock="Right" 
+              Margin="10,2"
+              Style="{StaticResource SimpleButtonStyle}" 
+              Foreground="{Binding GoldBarBorderBrush, RelativeSource={RelativeSource AncestorType={x:Type FacebookClient:MainWindow}}}"
+              Content="r"
+              FontFamily="Webdings" 
+              FontSize="16" 
+              FontWeight="Bold"
+              VerticalAlignment="Center" 
+              HorizontalAlignment="Right" 
+              ToolTip="Close information bar"
+              Click="_CloseGoldBar"/>
+          <TextBlock x:Name="GoldBarTextBlock" Margin="8,4" VerticalAlignment="Center" Foreground="Navy" FontSize="12px" FontWeight="Light" FontFamily="../Resources/Fonts/#Gotham" TextWrapping="Wrap"/>
+        </DockPanel>
+      </Border>
+
+      <ContentControl Grid.Row="0" Grid.RowSpan="3" Content="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=Dialog}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FocusManager.IsFocusScope="True" KeyboardNavigation.TabNavigation="Cycle" KeyboardNavigation.ControlTabNavigation="Cycle" KeyboardNavigation.DirectionalNavigation="Contained" Background="#CC000000">
+        <ContentControl.Style>
+          <Style TargetType="{x:Type ContentControl}">
+            <Setter Property="Template">
+              <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContentControl}">
+                  <Border
+                      Background="{TemplateBinding Background}" 
+                      HorizontalAlignment="{TemplateBinding HorizontalAlignment}" 
+                      VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                    <ContentPresenter 
+                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                        Content="{TemplateBinding Content}" />
+                  </Border>
+                </ControlTemplate>
+              </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+              <Trigger Property="Content" Value="{x:Null}">
+                <Setter Property="Visibility" Value="Collapsed" />
+                <Setter Property="IsEnabled" Value="False" />
+              </Trigger>
+            </Style.Triggers>
+          </Style>
+        </ContentControl.Style>
+      </ContentControl>
+    </Grid>
+  </NavigationWindow.Content>
+</NavigationWindow>

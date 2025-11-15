@@ -1,0 +1,107 @@
+﻿<UserControl x:Class="ClientManager.Controls.Spinner"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="30"
+    Height="30"
+    HorizontalContentAlignment="Stretch">
+	<UserControl.Resources>
+		<Geometry x:Key="dotBar">
+			M181.885,33.846c0,18.693,15.153,33.846,33.846,33.846s33.846-15.153,33.846-33.846S234.424,0,215.731,0
+			S181.885,15.153,181.885,33.846z M149.5,34.309c0-16.569-13.431-30-30-30c-16.569,0-30,13.431-30,30c0,16.568,13.431,30,30,30
+			C136.069,64.308,149.5,50.877,149.5,34.309z M55,34.309c0-15.188-12.312-27.5-27.499-27.5C12.313,6.808,0,19.12,0,34.309
+			c0,15.188,12.313,27.5,27.501,27.5C42.688,61.808,55,49.496,55,34.309z
+		</Geometry>
+
+		<Style x:Key="{x:Type Viewbox}" TargetType="{x:Type Viewbox}">
+			<Setter Property="Grid.Column" Value="1" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+			<Setter Property="Margin" Value="0,0,0,0" />
+		</Style>
+	</UserControl.Resources>
+	
+	<Grid x:Name="spinner" Visibility="Hidden" Width="30" Height="30">
+		<Grid.RenderTransform>
+			<RotateTransform x:Name="SpinnerRotate" CenterX="15" CenterY="13" Angle="0" />
+		</Grid.RenderTransform>
+		<!--<Grid.Resources>
+			<Storyboard x:Key="spin">
+				<DoubleAnimation To="359" From="0" Duration="0:0:0.65" RepeatBehavior="Forever" Storyboard.TargetProperty="(Control.RenderTransform).(RotateTransform.Angle)" />
+			</Storyboard>
+		</Grid.Resources>-->
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+
+		<Viewbox>
+			<Path Fill="#35528c" Data="{StaticResource dotBar}"/>
+		</Viewbox>
+		<Viewbox Opacity="1">
+			<Viewbox.RenderTransform>
+				<RotateTransform Angle="-30" />
+			</Viewbox.RenderTransform>
+			<Path Fill="#35528c" Data="{StaticResource dotBar}"/>
+		</Viewbox>
+		<Viewbox Opacity="1">
+			<Viewbox.RenderTransform>
+				<RotateTransform Angle="-60" />
+			</Viewbox.RenderTransform>
+			<Path Fill="#35528c" Data="{StaticResource dotBar}"/>
+		</Viewbox>
+		<Viewbox Opacity=".9">
+			<Viewbox.RenderTransform>
+				<RotateTransform Angle="-90" />
+			</Viewbox.RenderTransform>
+			<Path Fill="#35528c" Data="{StaticResource dotBar}"/>
+		</Viewbox>
+		<Viewbox Opacity=".8">
+			<Viewbox.RenderTransform>
+				<RotateTransform Angle="-120" />
+			</Viewbox.RenderTransform>
+			<Path Fill="#35528c" Data="{StaticResource dotBar}"/>
+		</Viewbox>
+		<Viewbox Opacity=".7">
+			<Viewbox.RenderTransform>
+				<RotateTransform Angle="-150" />
+			</Viewbox.RenderTransform>
+			<Path Fill="#35528c" Data="{StaticResource dotBar}"/>
+		</Viewbox>
+		<Viewbox Opacity=".6">
+			<Viewbox.RenderTransform>
+				<RotateTransform Angle="-180" />
+			</Viewbox.RenderTransform>
+			<Path Fill="#35528c" Data="{StaticResource dotBar}"/>
+		</Viewbox>
+		<Viewbox Opacity=".5">
+			<Viewbox.RenderTransform>
+				<RotateTransform Angle="-210" />
+			</Viewbox.RenderTransform>
+			<Path Fill="#35528c" Data="{StaticResource dotBar}"/>
+		</Viewbox>
+		<Viewbox Opacity=".4">
+			<Viewbox.RenderTransform>
+				<RotateTransform Angle="-240" />
+			</Viewbox.RenderTransform>
+			<Path Fill="#35528c" Data="{StaticResource dotBar}"/>
+		</Viewbox>
+		<Viewbox Opacity=".3">
+			<Viewbox.RenderTransform>
+				<RotateTransform Angle="-270" />
+			</Viewbox.RenderTransform>
+			<Path Fill="#35528c" Data="{StaticResource dotBar}"/>
+		</Viewbox>
+		<Viewbox Opacity=".2">
+			<Viewbox.RenderTransform>
+				<RotateTransform Angle="-300" />
+			</Viewbox.RenderTransform>
+			<Path Fill="#35528c" Data="{StaticResource dotBar}"/>
+		</Viewbox>
+		<Viewbox Opacity=".1">
+			<Viewbox.RenderTransform>
+				<RotateTransform Angle="-330" />
+			</Viewbox.RenderTransform>
+			<Path Fill="#35528c" Data="{StaticResource dotBar}"/>
+		</Viewbox>
+
+	</Grid>
+</UserControl>

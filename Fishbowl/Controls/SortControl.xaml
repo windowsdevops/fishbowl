@@ -1,0 +1,125 @@
+﻿<UserControl x:Class="FacebookClient.SortControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:FacebookClient="clr-namespace:FacebookClient" 
+    xmlns:ClientManager="clr-namespace:ClientManager;assembly=ClientManager" 
+    xmlns:ClientManagerControls="clr-namespace:ClientManager.Controls;assembly=ClientManager"
+    xmlns:Facebook="clr-namespace:Contigo;assembly=Contigo"
+    Focusable="False"
+    x:Name="TopControl">
+  <UserControl.Resources>
+    <Style x:Key="{x:Type TabControl}" TargetType="{x:Type TabControl}">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="TabControl">
+            <Grid>
+              <StackPanel IsItemsHost="True" />
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style TargetType="TabItem">
+      <Setter Property="Height" Value="31" />
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type TabItem}">
+            <Grid>
+              <Grid x:Name="selected" Opacity="0">
+                <Border Background="#6d84b4" BorderBrush="#3b5998" BorderThickness="0,1,0,1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SnapsToDevicePixels="True" />
+              </Grid>
+
+              <Grid x:Name="hover" Opacity="0">
+                <Border Background="#6d84b4" BorderBrush="#3b5998" BorderThickness="0,1,0,1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SnapsToDevicePixels="True" />
+              </Grid>
+
+              <Rectangle Fill="#b3c4e9" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height=".5" SnapsToDevicePixels="True" />
+
+              <Rectangle Fill="#b3c4e9" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height=".5" SnapsToDevicePixels="True" />
+
+              <TextBlock x:Name="text" Foreground="#4b4b4b" FontSize="14px" FontWeight="Light" FontFamily="../Resources/Fonts/#Gotham" Text="{Binding Name}" Margin="5,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+              <TextBlock x:Name="text2" Foreground="#4b4b4b" FontSize="14px" FontWeight="Light" FontFamily="../Resources/Fonts/#Gotham" Text="{Binding Name}" Margin="5,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+
+              <Button HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Click="Button_Click" Tag="{Binding}">
+                <Button.Template>
+                  <ControlTemplate>
+                    <Grid Background="Transparent" />
+                  </ControlTemplate>
+                </Button.Template>
+              </Button>
+            </Grid>
+            <ControlTemplate.Triggers>
+              <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                <EventTrigger.Actions>
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation To=".5" Duration="0:0:0.3" Storyboard.TargetName="hover" Storyboard.TargetProperty="Opacity" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </EventTrigger.Actions>
+              </EventTrigger>
+              <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                <EventTrigger.Actions>
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation To="0" Duration="0:0:0.4" Storyboard.TargetName="hover" Storyboard.TargetProperty="Opacity" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </EventTrigger.Actions>
+              </EventTrigger>
+              <Trigger Property="IsSelected" Value="true">
+                <Trigger.EnterActions>
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation To="1" Duration="0:0:0.3" Storyboard.TargetName="selected" Storyboard.TargetProperty="Opacity" />
+                      <ColorAnimation To="#FFFFFF" Duration="0:0:0.1" Storyboard.TargetName="text" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" />
+                      <ColorAnimation To="#FFFFFF" Duration="0:0:0.1" Storyboard.TargetName="text2" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                  <BeginStoryboard>
+                    <Storyboard>
+                      <DoubleAnimation To="0" Duration="0:0:0.4" Storyboard.TargetName="selected" Storyboard.TargetProperty="Opacity" />
+                      <ColorAnimation To="#4b4b4b" Duration="0:0:0.1" Storyboard.TargetName="text" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" />
+                      <ColorAnimation To="#4b4b4b" Duration="0:0:0.1" Storyboard.TargetName="text2" Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)" />
+                    </Storyboard>
+                  </BeginStoryboard>
+                </Trigger.ExitActions>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </UserControl.Resources>
+  
+  <Border Style="{DynamicResource SearchAndFilterBarMainBorderStyle}">
+    <DockPanel>
+      <Button x:Name="ShowMoreButton" 
+              DockPanel.Dock="Bottom" 
+              Margin="10" 
+              Height="22" 
+              HorizontalAlignment="Left" 
+              VerticalAlignment="Top" 
+              Click="_OnUploadWizardButtonClicked">
+        <Button.Style>
+          <Style TargetType="{x:Type Button}" BasedOn="{StaticResource StandardButtonStyle}">
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding SortOrderMode, ElementName=TopControl}" Value="Albums">
+                <Setter Property="Visibility" Value="Visible"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Button.Style>
+        Add more photos
+      </Button>
+
+      <TextBlock DockPanel.Dock="Top" Foreground="#4b4b4b" FontSize="15px" FontStyle="Italic" FontFamily="../Resources/Fonts/#Gotham" Text="{Binding ElementName=TopControl, Path=TitleText}" Margin="10,17,0,6" />
+      <TextBlock DockPanel.Dock="Top" Foreground="#4b4b4b" FontSize="13px" FontWeight="Bold" FontFamily="../Resources/Fonts/#Gotham" Text="Sort by" Margin="10,17,0,0" />
+      <TabControl x:Name="SortTabs" Margin="0,6,0,0" />
+    </DockPanel>
+  </Border>
+</UserControl>

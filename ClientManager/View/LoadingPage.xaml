@@ -1,0 +1,27 @@
+﻿<ContentControl x:Class="ClientManager.View.LoadingPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:c="clr-namespace:ClientManager.Controls"
+    Loaded="ContentControl_Loaded"
+    Unloaded="ContentControl_Unloaded">
+  <Grid>
+    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+      <TextBlock 
+          Foreground="{DynamicResource FacebookBlueBrush}" 
+          FontFamily="Fonts/#Gotham" 
+          FontWeight="Light" 
+          FontSize="32" 
+          HorizontalAlignment="Center" 
+          Text="Loading..." />
+      <TextBlock 
+          Foreground="{DynamicResource FacebookBlueBrush}" 
+          FontFamily="Fonts/#Gotham" 
+          FontWeight="Light" 
+          FontSize="13" 
+          HorizontalAlignment="Center" 
+          Margin="0,5,0,0" 
+          Text="Please wait" />
+      <c:Spinner x:Name="Spinner" Margin="0,20,0,0"/>
+    </StackPanel>
+  </Grid>
+</ContentControl>

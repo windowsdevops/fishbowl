@@ -1,0 +1,13 @@
+﻿<!-- The PhotoViewer 'Blue' Theme -->
+
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/Blue/BlueMainPageResources.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Resources/Themes/Blue/BlueApplicationBarResources.xaml" />
+
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

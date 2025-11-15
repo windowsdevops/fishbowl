@@ -1,0 +1,277 @@
+﻿<UserControl x:Class="FacebookClient.EmbeddedBrowserControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <UserControl.Resources>
+    <Style x:Key="RefreshButtonStyle" TargetType="{x:Type Button}">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Grid>
+              <Border x:Name="RefreshButtonBorder" BorderBrush="Black" BorderThickness="1" CornerRadius="0" Height="22" Width="90">
+                <Border.Background>
+                  <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFD6E2FC" Offset="1" />
+                    <GradientStop Color="#FFEAF1FE" />
+                  </LinearGradientBrush>
+                </Border.Background>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                  <TextBlock Margin="10,0,3,0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12" FontFamily="SansSerifFont" Foreground="DarkBlue" Text="Refresh" />
+                  <TextBlock Margin="3,0,10,0" Text="q" VerticalAlignment="Center" FontSize="18" FontFamily="Webdings" Foreground="DarkBlue" />
+                </StackPanel>
+              </Border>
+            </Grid>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsFocused" Value="True" />
+              <Trigger Property="IsDefaulted" Value="True" />
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" TargetName="RefreshButtonBorder">
+                  <Setter.Value>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                      <GradientStop Color="#FFF3F3F3" Offset="0" />
+                      <GradientStop Color="#FFEBEBEB" Offset="0.5" />
+                      <GradientStop Color="#FFDDDDDD" Offset="0.5" />
+                      <GradientStop Color="#FFB1BDD6" Offset="1" />
+                    </LinearGradientBrush>
+                  </Setter.Value>
+                </Setter>
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Effect" TargetName="RefreshButtonBorder">
+                  <Setter.Value>
+                    <DropShadowEffect Color="White" BlurRadius="2" ShadowDepth="0" />
+                  </Setter.Value>
+                </Setter>
+                <Setter Property="Background" TargetName="RefreshButtonBorder">
+                  <Setter.Value>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                      <GradientStop Color="DarkGreen" Offset="0" />
+                      <GradientStop Color="#FFEBEBEB" Offset="0.2" />
+                      <GradientStop Color="#FFDDDDDD" Offset="0.2" />
+                      <GradientStop Color="DarkGreen" Offset="1" />
+                    </LinearGradientBrush>
+                  </Setter.Value>
+                </Setter>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False" />
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+      <Setter Property="Foreground" Value="DarkBlue" />
+    </Style>
+
+    <Style x:Key="PopOutButtonStyle" TargetType="{x:Type Button}">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Grid>
+              <Border x:Name="PopoutButtonBorder" BorderBrush="Black" BorderThickness="1" CornerRadius="0" Height="22" Width="90">
+                <Border.Background>
+                  <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFD6E2FC" Offset="1" />
+                    <GradientStop Color="#FFEAF1FE" />
+                  </LinearGradientBrush>
+                </Border.Background>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                  <TextBlock Margin="10,0,3,0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12" FontFamily="SansSerifFont" Foreground="DarkBlue" Text="Pop out" />
+                  <Viewbox Height="12">
+                    <Canvas Margin="9,2,5,2" VerticalAlignment="Center" Height="16" Width="25" HorizontalAlignment="Right">
+                      <Rectangle Fill="Transparent" Stroke="DarkBlue" Width="14" Height="10" Canvas.Top="4.666" />
+                      <Rectangle Fill="#FFE2EBFD" Stroke="DarkBlue" Width="14" Height="10" Canvas.Left="4.5" />
+                    </Canvas>
+                  </Viewbox>
+                </StackPanel>
+              </Border>
+            </Grid>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsFocused" Value="True" />
+              <Trigger Property="IsDefaulted" Value="True" />
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" TargetName="PopoutButtonBorder">
+                  <Setter.Value>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                      <GradientStop Color="#FFF3F3F3" Offset="0" />
+                      <GradientStop Color="#FFEBEBEB" Offset="0.5" />
+                      <GradientStop Color="#FFDDDDDD" Offset="0.5" />
+                      <GradientStop Color="#FFB1BDD6" Offset="1" />
+                    </LinearGradientBrush>
+                  </Setter.Value>
+                </Setter>
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Effect" TargetName="PopoutButtonBorder">
+                  <Setter.Value>
+                    <DropShadowEffect Color="White" BlurRadius="2" ShadowDepth="0" />
+                  </Setter.Value>
+                </Setter>
+                <Setter Property="Background" TargetName="PopoutButtonBorder">
+                  <Setter.Value>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                      <GradientStop Color="SlateBlue" Offset="0" />
+                      <GradientStop Color="#FFEBEBEB" Offset="0.2" />
+                      <GradientStop Color="#FFDDDDDD" Offset="0.2" />
+                      <GradientStop Color="SlateBlue" Offset="1" />
+                    </LinearGradientBrush>
+                  </Setter.Value>
+                </Setter>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False" />
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+      <Setter Property="Foreground" Value="DarkBlue" />
+    </Style>
+
+    <Style x:Key="BackButtonStyle" TargetType="{x:Type Button}">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Border x:Name="ButtonBorder" Width="40" Height="40">
+              <Border.Clip>
+                <EllipseGeometry RadiusX="19" RadiusY="19" Center="20, 20" />
+              </Border.Clip>
+              <Rectangle Fill="{StaticResource BackArrowDrawingBrush}" Margin="2" />
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsFocused" Value="True" />
+              <Trigger Property="IsDefaulted" Value="True" />
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" TargetName="ButtonBorder">
+                  <Setter.Value>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                      <GradientStop Color="#66F3F3F3" Offset="0" />
+                      <GradientStop Color="#66EBEBEB" Offset="0.5" />
+                      <GradientStop Color="#66DDDDDD" Offset="0.5" />
+                      <GradientStop Color="#66B1BDD6" Offset="1" />
+                    </LinearGradientBrush>
+                  </Setter.Value>
+                </Setter>
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" TargetName="ButtonBorder">
+                  <Setter.Value>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                      <GradientStop Color="#FFF3F3F3" Offset="0" />
+                      <GradientStop Color="#FFEBEBEB" Offset="0.5" />
+                      <GradientStop Color="#FFDDDDDD" Offset="0.5" />
+                      <GradientStop Color="#FFB1BDD6" Offset="1" />
+                    </LinearGradientBrush>
+                  </Setter.Value>
+                </Setter>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" TargetName="ButtonBorder" Value=".3" />
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+
+    <Style x:Key="CloseButtonStyle" TargetType="{x:Type Button}">
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="{x:Type Button}">
+            <Grid Height="22">
+              <Border x:Name="CloseButtonBorder" BorderBrush="Black" BorderThickness="1" CornerRadius="0" Height="Auto" Width="Auto">
+                <Border.Background>
+                  <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFD6E2FC" Offset="1" />
+                    <GradientStop Color="#FFEAF1FE" />
+                  </LinearGradientBrush>
+                </Border.Background>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                  <TextBlock x:Name="CloseText" Margin="15,0,3,0" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12" FontFamily="SansSerifFont" Foreground="DarkBlue" Text="Close" />
+                  <TextBlock x:Name="CloseText2" Margin="3,0,10,0" Text="r" VerticalAlignment="Center" FontSize="14" FontFamily="Webdings" Foreground="DarkBlue" />
+                </StackPanel>
+              </Border>
+            </Grid>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsFocused" Value="True" />
+              <Trigger Property="IsDefaulted" Value="True" />
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Effect" TargetName="CloseButtonBorder">
+                  <Setter.Value>
+                    <DropShadowEffect Color="White" BlurRadius="2" ShadowDepth="0" />
+                  </Setter.Value>
+                </Setter>
+                <Setter Property="Background" TargetName="CloseButtonBorder">
+                  <Setter.Value>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                      <GradientStop Color="Firebrick" Offset="0" />
+                      <GradientStop Color="#FFEBEBEB" Offset="0.2" />
+                      <GradientStop Color="#FFDDDDDD" Offset="0.2" />
+                      <GradientStop Color="Firebrick" Offset="1" />
+                    </LinearGradientBrush>
+                  </Setter.Value>
+                </Setter>
+                <Setter Property="Foreground" TargetName="CloseText" Value="White" />
+                <Setter Property="Foreground" TargetName="CloseText2" Value="White" />
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Effect" TargetName="CloseButtonBorder">
+                  <Setter.Value>
+                    <DropShadowEffect Color="White" BlurRadius="2" ShadowDepth="0" />
+                  </Setter.Value>
+                </Setter>
+                <Setter Property="Background" TargetName="CloseButtonBorder">
+                  <Setter.Value>
+                    <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                      <GradientStop Color="DarkRed" Offset="0" />
+                      <GradientStop Color="#FFEBEBEB" Offset="0.2" />
+                      <GradientStop Color="#FFDDDDDD" Offset="0.2" />
+                      <GradientStop Color="DarkRed" Offset="1" />
+                    </LinearGradientBrush>
+                  </Setter.Value>
+                </Setter>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False" />
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+      <Setter Property="Foreground" Value="DarkBlue" />
+    </Style>
+  </UserControl.Resources>
+
+  <Border Background="{DynamicResource ApplicationBarBackground}" BorderBrush="{StaticResource ApplicationBarBorderBrush}" BorderThickness="4" Margin="40">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="42" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+
+      <Button x:Name="BackButton" Grid.RowSpan="2" Style="{DynamicResource BackButtonStyle}" Click="_OnBrowseBackClicked" />
+
+      <DockPanel Grid.Column="1">
+        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="3,0,0,0">
+          <Button Style="{DynamicResource RefreshButtonStyle}" Click="_OnRefresh" />
+          <Button Style="{DynamicResource PopOutButtonStyle}" Click="_OnBreakout" />
+          <Button Style="{DynamicResource CloseButtonStyle}" Click="_OnClose" Margin="-2,0,0,0" />
+        </StackPanel>
+        <TextBlock x:Name="TitleTextBlock" Margin="10, 3" VerticalAlignment="Center" Foreground="White" TextTrimming="CharacterEllipsis" FontSize="14px" FontWeight="Bold" FontFamily="../Resources/Fonts/#Gotham" />
+      </DockPanel>
+
+      <DockPanel Grid.Row="1" Grid.Column="1">
+        <TextBlock x:Name="UriTextBlock" Margin="20, 3, 3, 4" VerticalAlignment="Center" Foreground="White" TextTrimming="CharacterEllipsis" FontSize="10px" FontWeight="Light" FontFamily="../Resources/Fonts/#Gotham" />
+      </DockPanel>
+
+      <Border x:Name="GoldBar" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Background="LightBlue" Visibility="Collapsed">
+        <TextBlock Margin="8,4" Foreground="Navy" FontSize="12px" FontWeight="Light" FontFamily="../Resources/Fonts/#Gotham" TextWrapping="Wrap">
+          <Run>Video content on this page may not work correctly.  If you don't see what you're expecting, try clicking the</Run>
+          <!-- Consider whether this one shouldn't close the embedded browser window. -->
+          <Hyperlink Click="_OnBreakout">Pop Out</Hyperlink>
+          <Run>button above to open the page in your normal browser.</Run>
+        </TextBlock>
+      </Border>
+      <Border x:Name="BrowserHost" Grid.ColumnSpan="2" Grid.Row="3" />
+    </Grid>
+  </Border>
+</UserControl>

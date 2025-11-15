@@ -1,0 +1,190 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ClientManagerControls="clr-namespace:ClientManager.Controls;assembly=ClientManager"
+                    xmlns:ClientManager="clr-namespace:ClientManager;assembly=ClientManager"
+                    xmlns:FacebookClient="clr-namespace:FacebookClient">
+
+    <!-- Slide show button -->
+    <Style x:Key="SlideShowButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <ContentPresenter RecognizesAccessKey="True" Margin="{TemplateBinding Padding}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Control template for the items control hosting slide show buttons -->
+    <Style x:Key="SlideShowToolbar" TargetType="{x:Type ItemsControl}">
+        <!-- Default styles for controls inside the toolbar as style resources -->
+        <Style.Resources>
+            <!-- Control template for buttons -->
+            <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="OverridesDefaultStyle" Value="True"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Margin" Value="5, 0" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <ContentPresenter RecognizesAccessKey="True" Margin="{TemplateBinding Padding}"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Style.Resources>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ItemsControl}">
+                    <StackPanel Orientation="Horizontal" IsItemsHost="True" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Margin" Value="5" />
+    </Style>
+
+    <!-- SimplePhotoViewerControl Template -->
+    <Style x:Key="{x:Type FacebookClient:SimplePhotoViewerControl}" TargetType="{x:Type FacebookClient:SimplePhotoViewerControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type FacebookClient:SimplePhotoViewerControl}">
+                    <Grid x:Name="SlideshowGrid"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#161616">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        
+                        <StackPanel Grid.Row="0" Margin="0,8,10,0" VerticalAlignment="Top" HorizontalAlignment="Right">
+                            <TextBlock HorizontalAlignment="Right" 
+                                       Text="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=ActivePhotoAlbum.Title}"
+                                       FontFamily="./Fonts/#Gotham" Opacity=".8"
+                                       FontSize="17" VerticalAlignment="Top"
+                                       Foreground="White" FontWeight="Medium"
+                                       TextWrapping="Wrap" Margin="0,0,0,4"/>
+                            
+                            <TextBlock 
+                                       Text="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=ActivePhotoAlbum.Owner}"
+                                       FontFamily="./Fonts/#Gotham" HorizontalAlignment="Right"
+                                       FontSize="13" VerticalAlignment="Top"
+                                       Foreground="White" Opacity=".7" FontWeight="Light"
+                                       TextWrapping="Wrap" Margin="0,0,0,4"/>
+                            
+                            <TextBlock 
+                                       Text="{Binding Source={x:Static ClientManager:ServiceProvider.ViewManager}, Path=ActivePhotoAlbum.Created, Converter={StaticResource DateTimeConverter}}"
+                                       FontFamily="./Fonts/#Gotham" HorizontalAlignment="Right"
+                                       FontSize="12" Opacity=".5" FontWeight="Light"
+                                       Foreground="White" VerticalAlignment="Top"
+                                       TextWrapping="Wrap"/>
+                            
+                        </StackPanel>
+                        <Button Grid.Row="0" Opacity=".4" Margin="5,8,10,0" VerticalAlignment="Top" HorizontalAlignment="Left"  
+                                Background="Black" Foreground="DarkGray" Style="{DynamicResource ExitButtonStyle}"  Content="Exit"  Command="MediaCommands.Stop"/>
+                        
+                        <!--<Image Grid.Row="1" x:Name="SlideShowPhoto" Source="{TemplateBinding ImageSource}" MaxHeight="800" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+
+                        <Grid Grid.Row="1" x:Name="MyViewbox" Margin="20" Width="Auto" Height="Auto" 
+                              HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <!--<Border Margin="-50">
+                                    <Border.Background>
+                                        <VisualBrush Stretch="Fill">
+                                            <VisualBrush.Visual>
+                                                <Grid Width="40" Height="40">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="10" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="12" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="10" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="12" />
+                                                    </Grid.RowDefinitions>
+
+                                                    <Image Grid.Row="0" Grid.Column="0" Source="../Images/Controls/photo_top_left.png" Stretch="Fill" />
+                                                    <Image Grid.Row="0" Grid.Column="1" Source="../Images/Controls/photo_top.png" Stretch="Fill" />
+                                                    <Image Grid.Row="0" Grid.Column="2" Source="../Images/Controls/photo_top_right.png" Stretch="Fill" />
+
+                                                    <Image Grid.Row="1" Grid.Column="0" Source="../Images/Controls/photo_left.png" Stretch="Fill" />
+                                                    <Image Grid.Row="1" Grid.Column="2" Source="../Images/Controls/photo_right.png" Stretch="Fill" />
+
+                                                    <Image Grid.Row="2" Grid.Column="0" Source="../Images/Controls/photo_bottom_left.png" Stretch="Fill" />
+                                                    <Image Grid.Row="2" Grid.Column="1" Source="../Images/Controls/photo_bottom.png" Stretch="Fill" />
+                                                    <Image Grid.Row="2" Grid.Column="2" Source="../Images/Controls/photo_bottom_right.png" Stretch="Fill" />
+
+                                                </Grid>
+                                            </VisualBrush.Visual>
+                                        </VisualBrush>
+                                    </Border.Background>
+                                </Border>-->
+                            <Viewbox MaxHeight="800" MaxWidth="1200">
+                                <Image Source="{TemplateBinding ImageSource}" x:Name="myImage" Stretch="UniformToFill" >
+                            </Image>
+                            </Viewbox>
+                        </Grid>
+
+                        <!--<Border Grid.Row="2" Margin="0,20,0,0"  Width="{Binding Path=ActualWidth, ElementName=MyViewbox, Mode=Default}" Height="400" >
+                            <Border.Background>
+                                <VisualBrush Visual="{Binding ElementName=myImage}">
+                                    <VisualBrush.Transform>
+                                        <ScaleTransform ScaleX="1" ScaleY="-1" CenterX="200" CenterY="100"></ScaleTransform>
+                                    </VisualBrush.Transform>
+                                </VisualBrush>
+                            </Border.Background>
+                            <Border.OpacityMask>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Offset="0" Color="Black"></GradientStop>
+                                    <GradientStop Offset="0.4" Color="Transparent"></GradientStop>
+                                </LinearGradientBrush>
+                            </Border.OpacityMask>
+                        </Border>-->
+                       
+                        <Border Grid.Row="3" x:Name="MenuBorder" Height="60" Margin="5"  SnapsToDevicePixels="True" HorizontalAlignment="Center" VerticalAlignment="Bottom" Background="Transparent" CornerRadius="6">
+                            <ItemsControl x:Name="MenuItemsControl" SnapsToDevicePixels="True" Style="{StaticResource SlideShowToolbar}" Visibility="Hidden">
+                                <Button x:Name="PlayPauseButton" Command="MediaCommands.Pause" AutomationProperties.AutomationId="PlayPause" AutomationProperties.Name="PlayPause" ToolTip="Pause slide show" Padding="3">
+                                    <Image x:Name="PlayPauseImage" Height="32" Source="pack://application:,,,/Resources/Images/PauseSlideShow.png" />
+                                </Button>
+                                <Button Command="MediaCommands.Stop" AutomationProperties.AutomationId="Stop" AutomationProperties.Name="Stop" ToolTip="Stop slide show" Padding="3">
+                                    <Image Height="32" Source="pack://application:,,,/Resources/Images/StopSlideShow.png" />
+                                </Button>
+                                <Button Command="MediaCommands.PreviousTrack" AutomationProperties.AutomationId="PrevSlide" AutomationProperties.Name="PrevSlide" ToolTip="Previous slide" Padding="3">
+                                    <Image Height="32" Source="pack://application:,,,/Resources/Images/PrevSlide.png" />
+                                </Button>
+                                <Button Command="MediaCommands.NextTrack" AutomationProperties.AutomationId="NextSlide" AutomationProperties.Name="NextSlide" ToolTip="Next slide" Padding="3">
+                                    <Image Height="32" Source="pack://application:,,,/Resources/Images/NextSlide.png"/>
+                                </Button>
+                            </ItemsControl>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger SourceName="MenuBorder" Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MenuBorder" Property="Background" Value="#66000000" />
+                            <Setter TargetName="MenuItemsControl" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type FacebookClient:PhotoSlideShowControl}}, Path=Paused}" Value="True">
+                            <Setter TargetName="PlayPauseButton" Property="Command" Value="MediaCommands.Play" />
+                            <Setter TargetName="PlayPauseButton" Property="ToolTip" Value="Resume slide show" />
+                            <Setter TargetName="PlayPauseImage" Property="Source" Value="pack://application:,,,/Resources/Images/PlaySlideShow.png" />
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- SlideShowControl template -->
+    <ControlTemplate x:Key="PhotoSlideShowTemplate" TargetType="{x:Type FacebookClient:PhotoSlideShowControl}">
+        <Grid  HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Decorator x:Name="PART_PhotoHost" Margin="0,0"  />
+        </Grid>   
+   </ControlTemplate>    
+
+ </ResourceDictionary>

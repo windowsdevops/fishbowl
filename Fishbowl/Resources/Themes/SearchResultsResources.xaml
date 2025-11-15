@@ -1,0 +1,604 @@
+﻿<ClientManagerView:EventResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    x:Class="FacebookClient.SearchResultsEventResourceDictionary"    
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Facebook="clr-namespace:Contigo;assembly=Contigo"
+    xmlns:FacebookClient="clr-namespace:FacebookClient"
+    xmlns:ClientManagerControls="clr-namespace:ClientManager.Controls;assembly=ClientManager"
+    xmlns:ClientManager="clr-namespace:ClientManager;assembly=ClientManager"
+    xmlns:ClientManagerData="clr-namespace:ClientManager.Data;assembly=ClientManager"
+    xmlns:ClientManagerView="clr-namespace:ClientManager.View;assembly=ClientManager"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    
+    <Style TargetType="{x:Type FacebookClient:FriendButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type FacebookClient:FriendButton}">
+                    <ClientManagerControls:FacebookContactDragContainer FacebookContact="{TemplateBinding Friend}">
+                        <Button x:Name="ItemButton" VerticalAlignment="Top" Margin="5" ClipToBounds="False" Style="{StaticResource AnimatedItemButton}"
+                            Click="OnNavigateToContentButtonClicked"
+                            ClientManagerView:ViewManager.NavigationContent="{TemplateBinding Friend}"
+                            IsEnabled="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Friend.HasData, FallbackValue=False}">
+                            <Viewbox>
+                                <Grid Width="106" Height="106">
+                                    <Grid RenderTransformOrigin="0.5,0.5">
+                                        <Grid.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="-6"/>
+                                            </TransformGroup>
+                                        </Grid.RenderTransform>
+                                        <Image Name="Placeholder" Source="pack://application:,,,/Resources/Images/avatar_background.png"/>
+                                        <ClientManagerControls:FacebookImageControl FacebookImage="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Friend.Image}"
+                                                                                    FacebookImageDimensions="Normal">
+                                            <ClientManagerControls:FacebookImageControl.Template>
+                                                <ControlTemplate TargetType="{x:Type ClientManagerControls:FacebookImageControl}">
+                                                    <Border Margin="4,4,4.5,6">
+                                                        <Border.Background>
+                                                            <ImageBrush Stretch="UniformToFill" ImageSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ImageSource}" />
+                                                        </Border.Background>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </ClientManagerControls:FacebookImageControl.Template>
+                                        </ClientManagerControls:FacebookImageControl>
+                                    </Grid>
+
+                                    <!--<Image Width="19" Height="27" Source="pack://application:,,,/Resources/Images/thumbtack.png" 
+                                        VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,-9,-40,0" />-->
+                                </Grid>
+                            </Viewbox>
+                        </Button>
+                    </ClientManagerControls:FacebookContactDragContainer>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsClickable" Value="False">
+                            <Setter TargetName="ItemButton" Property="IsEnabled" Value="False"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>    
+    </Style>
+    
+    <DataTemplate x:Key="FriendResultTemplate" DataType="{x:Type Facebook:FacebookContact}">
+        <Grid x:Name="RootGrid">
+            <FacebookClient:FriendButton Friend="{Binding}" IsClickable="True" ToolTip="{Binding Name}"/>
+            <!--<Popup IsOpen="{Binding ElementName=RootGrid, Path=IsMouseOver, Mode=OneWay}" Placement="Center"
+                   PlacementTarget="{Binding ElementName=ItemButton}" PopupAnimation="Fade"
+                   AllowsTransparency="True">
+                <Border BorderBrush="Black" BorderThickness="1" Background="LightGray" CornerRadius="12" Padding="10">
+                    <StackPanel>
+                        <FacebookClient:SearchTextBlock InputText="{Binding Name}" FontSize="12" HorizontalAlignment="Center"/>
+                        <FacebookClient:FriendButton Friend="{Binding}" Margin="5"/>
+                        <TextBlock Text="{Binding Birthday, StringFormat=Birthday: \{0\}}" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Popup>-->
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="CommentResultTemplate" DataType="{x:Type Facebook:ActivityComment}">
+        <Grid Width="390">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" x:Name="FriendGrid">
+                <FacebookClient:FriendButton x:Name="FriendButton" Friend="{Binding FromUser}" IsClickable="True" ToolTip="{Binding FromUser.Name}"/>
+                <!--<Popup IsOpen="{Binding ElementName=FriendGrid, Path=IsMouseOver, Mode=OneWay}" Placement="Center"
+                   PlacementTarget="{Binding ElementName=FriendButton}" PopupAnimation="Fade"
+                   AllowsTransparency="True">
+                    <Border BorderBrush="Black" BorderThickness="1" Background="LightGray" CornerRadius="12" Padding="10">
+                        <StackPanel>
+                            <FacebookClient:SearchTextBlock InputText="{Binding FromUser.Name}" FontSize="12" HorizontalAlignment="Center"/>
+                            <FacebookClient:FriendButton Friend="{Binding FromUser}" Margin="5"/>
+                            <TextBlock Text="{Binding FromUser.Birthday, StringFormat=Birthday: \{0\}}" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </Popup>-->
+            </Grid>
+            <!--<Path Grid.Column="1" Fill="{StaticResource CommentBinNewCommentBackground}" Stretch="Fill" Stroke="{DynamicResource CommentBinNewCommentBorder}" 
+                  HorizontalAlignment="Right" Margin="0,5,0,0" Width="15" Data="M22.166642,154.45381 L29.999666,187.66699 40.791059,154.54395" StrokeThickness="3" 
+                  d:LayoutOverrides="GridBox" VerticalAlignment="Top" Height="25" RenderTransformOrigin="0.5,0.5">
+                <Path.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="90"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Path.RenderTransform>
+            </Path>-->
+            <Grid Grid.Column="2" x:Name="CommentGrid">
+                <Button x:Name="CommentButton" Style="{StaticResource SimpleButtonStyle}" 
+                    Click="OnNavigateToContentButtonClicked"
+                    ClientManagerView:ViewManager.NavigationContent="{Binding FromUser}"
+                    IsEnabled="{Binding FromUser.HasData, FallbackValue=False}">
+                    <!--<Border Margin="0" VerticalAlignment="Top" Background="{DynamicResource CommentBinNewCommentBackground}" 
+                        BorderBrush="{DynamicResource CommentBinNewCommentBorder}" BorderThickness="3" CornerRadius="10" Padding="5">-->
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <FacebookClient:SearchTextBlock Grid.Row="0" x:Name="CommentWriterName" 
+                                   InputText="{Binding FromUser.Name}" Margin="0" TextWrapping="Wrap" 
+                                   d:LayoutOverrides="Width" Style="{StaticResource ProfileNameTextBlockStyle}" 
+                                   HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <FacebookClient:SearchTextBlock Grid.Row="1" x:Name="CommentItem" 
+                                InputText="{Binding Text}" TextWrapping="Wrap"
+                                Style="{StaticResource MessageTextBlockStyle}"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Top" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Grid.Row="2" x:Name="CommentTime" Text="{Binding Time, StringFormat=\{0:MMMM d\, yyyy h:mm tt\}}" 
+                                       Margin="0,3,0,0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                       Style="{StaticResource CreatedTextBlockStyle}" />
+                    </Grid>
+                    <!--</Border>-->
+                </Button>
+                <!--<Popup IsOpen="{Binding ElementName=CommentGrid, Path=IsMouseOver, Mode=OneWay}" Placement="Relative"
+                   PlacementTarget="{Binding ElementName=CommentButton}" PopupAnimation="Fade"
+                   AllowsTransparency="True">
+                    <Button Style="{StaticResource SimpleButtonStyle}" MinWidth="{Binding ElementName=CommentButton, Path=ActualWidth}" 
+                            MinHeight="{Binding ElementName=CommentButton, Path=ActualHeight}" MaxWidth="500" 
+                        Click="OnNavigateToContentButtonClicked"
+                        ClientManagerView:ViewManager.NavigationContent="{Binding FromUser}"
+                        IsEnabled="{Binding FromUser.HasData, FallbackValue=False}">
+                        <Border Margin="0" VerticalAlignment="Top" Background="{DynamicResource CommentBinNewCommentBackground}" 
+                            BorderBrush="{DynamicResource CommentBinNewCommentBorder}" BorderThickness="3" CornerRadius="10" Padding="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <FacebookClient:SearchTextBlock Grid.Row="0" InputText="{Binding FromUser.Name}" Margin="0" TextWrapping="Wrap" 
+                                    Foreground="{DynamicResource CommendWriterNameFontColor}" d:LayoutOverrides="Width" 
+                                    HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Calibri" FontSize="16"/>
+                                <FacebookClient:SearchTextBlock Grid.Row="1" InputText="{Binding Text}" TextWrapping="Wrap" 
+                                    Foreground="{DynamicResource CommendWriterCommentFontColor}" 
+                                    FontFamily="Calibri" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="16"/>
+                                <TextBlock Grid.Row="2" Text="{Binding Time, StringFormat=\{0:MMMM d\, yyyy h:mm tt\}}" 
+                                    Margin="3,0,0,0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                    FontFamily="Calibri" Foreground="{DynamicResource CommendWriterDateTimeFontColor}" FontSize="16"/>
+                            </Grid>
+                        </Border>
+                    </Button>
+                </Popup>-->
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PostResultTemplate" DataType="{x:Type Facebook:ActivityPost}">
+        <Grid Width="390">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" x:Name="FriendGrid">
+                <FacebookClient:FriendButton x:Name="FriendButton" Friend="{Binding Actor}" IsClickable="True" ToolTip="{Binding Actor.Name}"/>
+                <!--<Popup IsOpen="{Binding ElementName=FriendGrid, Path=IsMouseOver, Mode=OneWay}" Placement="Center"
+                   PlacementTarget="{Binding ElementName=FriendButton}" PopupAnimation="Fade"
+                   AllowsTransparency="True">
+                    <Border BorderBrush="Black" BorderThickness="1" Background="LightGray" CornerRadius="12" Padding="10">
+                        <StackPanel>
+                            <FacebookClient:SearchTextBlock InputText="{Binding Actor.Name}" FontSize="12" HorizontalAlignment="Center"/>
+                            <FacebookClient:FriendButton Friend="{Binding Actor}" Margin="5"/>
+                            <TextBlock Text="{Binding Actor.Birthday, StringFormat=Birthday: \{0\}}" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </Popup>-->
+            </Grid>
+            <Grid Grid.Column="2" x:Name="PostGrid">
+                <Button x:Name="PostButton" Style="{StaticResource SimpleButtonStyle}" 
+                        Click="OnNavigateToContentButtonClicked"
+                        ClientManagerView:ViewManager.NavigationContent="{Binding Actor}"
+                        IsEnabled="{Binding Actor.HasData, FallbackValue=False}">
+                    <!--<Border BorderBrush="DarkGray" BorderThickness="2" Background="LightGray" CornerRadius="6" Padding="5">-->
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <FacebookClient:SearchTextBlock Grid.Row="0" InputText="{Binding Actor.Name}" Margin="0" TextWrapping="Wrap" 
+                                        d:LayoutOverrides="Width" Style="{StaticResource ProfileNameTextBlockStyle}"  
+                                        HorizontalAlignment="Left" VerticalAlignment="Top" />
+                            <FacebookClient:SearchTextBlock Grid.Row="1"
+                                InputText="{Binding Message}" TextWrapping="Wrap" 
+                                Style="{StaticResource MessageTextBlockStyle}"
+                                HorizontalAlignment="Stretch" VerticalAlignment="Top" TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Grid.Row="2" Text="{Binding Created, StringFormat=\{0:MMMM d\, yyyy h:mm tt\}}" 
+                                        Margin="0,3,0,0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                        Style="{StaticResource CreatedTextBlockStyle}" />
+                    </Grid>
+                    <!--</Border>-->
+                </Button>
+                <!--<Popup IsOpen="{Binding ElementName=PostGrid, Path=IsMouseOver, Mode=OneWay}" Placement="Relative"
+                   PlacementTarget="{Binding ElementName=PostButton}" PopupAnimation="Fade"
+                   AllowsTransparency="True">
+                    <Button Style="{StaticResource SimpleButtonStyle}" 
+                        Click="OnNavigateToContentButtonClicked"
+                        ClientManagerView:ViewManager.NavigationContent="{Binding Actor}"
+                        IsEnabled="{Binding Actor.HasData, FallbackValue=False}"
+                        MinWidth="{Binding ElementName=PostButton, Path=ActualWidth}"
+                        MinHeight="{Binding ElementName=PostButton, Path=ActualHeight}"
+                        MaxWidth="500">
+                        <Border BorderBrush="DarkGray" BorderThickness="2" Background="LightGray" CornerRadius="6" Padding="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <FacebookClient:SearchTextBlock Grid.Row="0" InputText="{Binding Actor.Name}" Margin="0" TextWrapping="Wrap" 
+                                        Foreground="DimGray" d:LayoutOverrides="Width" 
+                                        HorizontalAlignment="Left" VerticalAlignment="Top" FontFamily="Calibri" FontSize="16"/>
+                                <FacebookClient:SearchTextBlock Grid.Row="1" InputText="{Binding Message}" TextWrapping="Wrap" 
+                                Foreground="{DynamicResource CommendWriterCommentFontColor}" 
+                                FontFamily="Calibri" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="16"/>
+                                <TextBlock Grid.Row="2" Text="{Binding Created, StringFormat=\{0:MMMM d\, yyyy h:mm tt\}}" 
+                                        Margin="3,0,0,0" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Top" 
+                                        FontFamily="Calibri" Foreground="{DynamicResource CommendWriterDateTimeFontColor}" FontSize="16"/>
+                            </Grid>
+                        </Border>
+                    </Button>
+                </Popup>-->
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PhotoResultTemplate" DataType="{x:Type Facebook:FacebookPhoto}">
+        <ClientManagerControls:FacebookPhotoDragContainer FacebookPhoto="{Binding}">
+            <Button
+                Click="OnNavigateToContentButtonClicked"
+                ClientManagerView:ViewManager.NavigationContent="{Binding}"
+                IsEnabled="{Binding HasData, FallbackValue=False}"                                          
+                Style="{DynamicResource AnimatedItemButton}">
+                <Viewbox>
+                    <Grid Margin="2.5" Width="92" Height="92">
+                        <Image Name="Placeholder" Source="pack://application:,,,/Resources/Images/photo_background.png"/>
+                        <ClientManagerControls:FacebookImageControl FacebookImage="{Binding Image}" FacebookImageDimensions="Small">
+                            <ClientManagerControls:FacebookImageControl.Template>
+                                <ControlTemplate TargetType="{x:Type ClientManagerControls:FacebookImageControl}">
+                                    <Image Margin="4,4,6,16" Stretch="UniformToFill" Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ImageSource}" />
+                                </ControlTemplate>
+                            </ClientManagerControls:FacebookImageControl.Template>
+                        </ClientManagerControls:FacebookImageControl>
+                    </Grid>
+                </Viewbox>
+                <!--<Border BorderBrush="{DynamicResource Border_ItemOutline}" BorderThickness="{DynamicResource Border_ItemOutline_Thickness}" Margin="3">
+                    <ClientManagerControls:ImageThumbnailControl FacebookImage="{Binding Path=Image}" ImageType="Other" Width="80" Height="80" RenderTransformOrigin="0.5,0.5" Focusable="False" />
+                </Border>-->
+            </Button>
+        </ClientManagerControls:FacebookPhotoDragContainer>
+    </DataTemplate>
+
+    <Style x:Key="GalleryAlbumButton3" TargetType="{x:Type Button}">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Panel.ZIndex" Value="1"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="{x:Type Button}">
+              <Grid>
+                <ContentPresenter Focusable="False"/>
+              </Grid>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+    
+    <DataTemplate x:Key="AlbumResultTemplate" DataType="{x:Type Facebook:FacebookPhotoAlbum}">
+        <Button Style="{StaticResource GalleryAlbumButton3}"
+                        Click="OnNavigateToContentButtonClicked"
+                        ClientManagerView:ViewManager.NavigationContent="{Binding Photos[0]}"
+                        IsEnabled="{Binding Photos[0].HasData, FallbackValue=False}" Width="220" Height="160">
+            <Grid Margin="14,0,0,0">
+            <Grid>
+            <Grid Name="EffectGrid" Visibility="Collapsed" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="0" ShadowDepth="0" Color="#FF3B5998" Opacity=".5" />
+                </Grid.Effect>
+                <Grid Width="92" Height="92" HorizontalAlignment="Left" Margin="50,20,0,0" VerticalAlignment="Top">
+                    <Grid.Style>
+                        <Style TargetType="{x:Type Grid}">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Photos.Count}" Value="1">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Photos.Count}" Value="2">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <Rectangle Fill="White" Margin="0,0,3,3" />
+                </Grid>
+                <Grid Width="92" Height="92" HorizontalAlignment="Left" Margin="25,20,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <RotateTransform Angle="-8"/>
+                    </Grid.RenderTransform>
+                    <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                      <Setter Property="Visibility" Value="Visible" />
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding Photos.Count}" Value="1">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Grid.Style>
+                    <Rectangle Fill="White" Margin="0,0,3,3" />
+                </Grid>
+                <Grid Width="92" Height="92" HorizontalAlignment="Left" Margin="0,15,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <RotateTransform Angle="-24"/>
+                    </Grid.RenderTransform>
+                    <Rectangle Fill="White" Margin="0,0,3,3" />
+                </Grid>
+                <Grid Width="50" Height="50" HorizontalAlignment="Left" Margin="81,85,0,0" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <RotateTransform Angle="-6"/>
+                    </Grid.RenderTransform>
+                    <Rectangle Fill="White" Margin="0,0,0,2" />
+                </Grid>
+            </Grid>
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
+                <Grid x:Name="ThirdPhotoGrid"
+                      Width="92"
+                      Height="92"
+                      HorizontalAlignment="Left"
+                      Margin="50,20,0,0"
+                      VerticalAlignment="Top"
+                      RenderTransformOrigin="0.5,0.5">
+                    <Grid.Style>
+                        <Style TargetType="{x:Type Grid}">
+                            <Setter Property="Visibility" Value="Visible" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Photos.Count}" Value="1">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Photos.Count}" Value="2">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Grid.Style>
+                    <Grid>
+                    <Image Source="pack://application:,,,/Resources/Images/photo_background.png" />
+                    <ClientManagerControls:LargePhotoThumbnailControl FacebookPhoto="{Binding Path=ThirdPhoto}" Margin="4,4,6,16" Focusable="False" RenderTransformOrigin="0.5,0.5"/>
+                    </Grid>                               
+                </Grid>
+                                    
+              <Grid x:Name="SecondPhotoGrid"
+                Width="92"
+                Height="92"
+                HorizontalAlignment="Left"
+                Margin="25,20,0,0"
+                VerticalAlignment="Top"
+                RenderTransformOrigin="0.5,0.5">
+                  <Grid.Style>
+                    <Style TargetType="{x:Type Grid}">
+                      <Setter Property="Visibility" Value="Visible" />
+                      <Style.Triggers>
+                        <DataTrigger Binding="{Binding Photos.Count}" Value="1">
+                          <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                      </Style.Triggers>
+                    </Style>
+                  </Grid.Style>
+                    <Grid.RenderTransform>
+                  <RotateTransform Angle="-8"/>
+                </Grid.RenderTransform>
+                  <Image Source="pack://application:,,,/Resources/Images/photo_background.png" />
+                  <ClientManagerControls:LargePhotoThumbnailControl Margin="4,4,6,16" FacebookPhoto="{Binding Path=SecondPhoto}" Focusable="False" RenderTransformOrigin="0.5,0.5"/>
+              </Grid>
+              <Grid
+                Width="92"
+                Height="92"
+                HorizontalAlignment="Left"
+                Margin="0,15,0,0"
+                VerticalAlignment="Top"
+                RenderTransformOrigin="0.5,0.5">
+                <Grid.RenderTransform>
+                  <RotateTransform Angle="-24"/>
+                </Grid.RenderTransform>
+                <Image Source="pack://application:,,,/Resources/Images/photo_background.png"/>
+                <ClientManagerControls:LargePhotoThumbnailControl
+                  Margin="4,4,6,16"
+                  FacebookPhoto="{Binding Path=FirstPhoto}"
+                  Focusable="False"
+                  RenderTransformOrigin="0.5,0.5"/>
+              </Grid>
+            </Grid>
+            <Viewbox
+                Width="50"
+                Height="50"
+                HorizontalAlignment="Right"
+                Margin="0,0,75,25"
+                VerticalAlignment="Bottom">
+                  <Grid Width="106" Height="106" DataContext="{Binding Owner}">
+                <Grid RenderTransformOrigin="0.5,0.5">
+                  <Grid.RenderTransform>
+                    <TransformGroup>
+                      <RotateTransform Angle="-6"/>
+                    </TransformGroup>
+                  </Grid.RenderTransform>
+                  <Image Name="Placeholder" Source="pack://application:,,,/Resources/Images/avatar_background.png"/>
+                  <ClientManagerControls:FacebookImageControl FacebookImage="{Binding Image}" FacebookImageDimensions="Big">
+                    <ClientManagerControls:FacebookImageControl.Template>
+                      <ControlTemplate TargetType="{x:Type ClientManagerControls:FacebookImageControl}">
+                        <Border Margin="4,4,4.5,6">
+                          <Border.Background>
+                            <ImageBrush ImageSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ImageSource}" Stretch="UniformToFill"/>
+                          </Border.Background>
+                        </Border>
+                      </ControlTemplate>
+                    </ClientManagerControls:FacebookImageControl.Template>
+                  </ClientManagerControls:FacebookImageControl>
+                </Grid>
+              </Grid>
+            </Viewbox>
+                <Grid.Triggers>                                                             
+                    <EventTrigger RoutedEvent="Mouse.MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                    <DiscreteObjectKeyFrame KeyTime="00:00:00" Value="{x:Static Visibility.Visible}" />
+                                </ObjectAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid"  Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:00.0000000" Value="0"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid"  Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:00.0000000" Value="0"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:00.0900000" Value="3"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:00.0900000" Value="3"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="6"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="6"/>
+                                </DoubleAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="Mouse.MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ObjectAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Visibility)">
+                                    <DiscreteObjectKeyFrame KeyTime="00:00:00.25" Value="{x:Static Visibility.Collapsed}" />
+                                </ObjectAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:00.0000000" Value="6"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:00.0000000" Value="6"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:00.0900000" Value="3"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:00.0900000" Value="3"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="0"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="EffectGrid" Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:00.2200000" Value="0"/>
+                                </DoubleAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Grid.Triggers>
+            </Grid>
+            <StackPanel VerticalAlignment="Bottom" Orientation="Vertical">
+              <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                <TextBlock VerticalAlignment="Center" Style="{StaticResource AlbumInfoStyle}" Text="{Binding Path=Photos.Count}"/>
+                <TextBlock
+                  Margin="3,0,0,0"
+                  VerticalAlignment="Center"
+                  Style="{StaticResource AlbumInfoStyle}"
+                  Text="photos"/>
+              </StackPanel>
+              <TextBlock
+                HorizontalAlignment="Left"
+                Margin="0,2,0,0"
+                Style="{StaticResource AlbumTitleStyle}"
+                Text="{Binding Path=Title}"/>
+            </StackPanel>
+          </Grid>
+        </Button>
+    </DataTemplate>
+    
+    <Style TargetType="{x:Type FacebookClient:SearchContentControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type FacebookClient:SearchContentControl}">
+                    <StackPanel x:Name="RootPanel" Margin="0,5,0,0">
+                        <StackPanel Orientation="Horizontal" TextElement.FontSize="12" TextElement.FontWeight="Bold" Margin="0,0,0,0">
+                            <TextBlock Text="{TemplateBinding Title}"/>
+                            <TextBlock Margin="5,0,0,0" Foreground="DimGray">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="Items.Count" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                        <Binding Path="Title" RelativeSource="{RelativeSource TemplatedParent}"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </StackPanel>
+                        <Grid Margin="0,6,0,0" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <ListBox Grid.Column="0" x:Name="ListBox" 
+                                 ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Items}"
+                                 ItemTemplate="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ItemTemplate}" 
+                                 ItemContainerStyle="{StaticResource UnselectableListBoxItem}"
+                                 BorderBrush="Transparent" Background="Transparent"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                 Height="{TemplateBinding ListHeight}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <FacebookClient:RowScrollingPanel x:Name="ItemsPanel"
+                                            ItemHeight="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=FacebookClient:SearchContentControl}, Path=ItemHeight}" 
+                                            ItemWidth="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=FacebookClient:SearchContentControl}, Path=ItemWidth}"/>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                            <Grid Grid.Column="1" VerticalAlignment="Center" x:Name="ScrollArrows" Margin="10" Visibility="Hidden">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="12" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="12" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="7" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="7" />
+                                </Grid.RowDefinitions>
+                                <Image Grid.Column="0" Margin="0,0,-0.1,0" Source="../Images/Controls/text_box_top_left.png" Stretch="Fill" />
+                                <Image Grid.Column="1" Source="../Images/Controls/text_box_top.png" Stretch="Fill" />
+                                <Image Grid.Column="2" Margin="-0.1,0,0,0" Source="../Images/Controls/text_box_top_right.png" Stretch="Fill" />
+                                <Image Grid.Column="0" Grid.Row="1" Source="../Images/Controls/text_box_left.png" Stretch="Fill" />
+                                <Image Grid.Column="2" Grid.Row="1" Source="../Images/Controls/text_box_right.png" Stretch="Fill" />
+                                <Image Grid.Column="0" Grid.Row="2" Margin="0,0,-0.1,0" Source="../Images/Controls/text_box_bottom_left.png" Stretch="Fill" />
+                                <Image Grid.Column="1" Grid.Row="2" Source="../Images/Controls/text_box_bottom.png" Stretch="Fill" />
+                                <Image Grid.Column="2" Grid.Row="2" Source="../Images/Controls/text_box_bottom_right.png" Stretch="Fill" />
+                                <StackPanel Grid.Row="1" Grid.Column="1">
+                                    <RepeatButton Template="{DynamicResource ScrollbarButtonTemplate}" Command="{x:Static FacebookClient:SearchContentControl.ScrollUpCommand}" RenderTransformOrigin="0.5,0.5" >
+                                        <RepeatButton.RenderTransform>
+                                            <RotateTransform Angle="90"/>
+                                        </RepeatButton.RenderTransform>
+                                    </RepeatButton>
+                                    <RepeatButton Margin="0,25,0,0" Template="{DynamicResource ScrollbarButtonTemplate}" Command="{x:Static FacebookClient:SearchContentControl.ScrollDownCommand}" RenderTransformOrigin="0.5,0.5" >
+                                        <RepeatButton.RenderTransform>
+                                            <RotateTransform Angle="270"/>
+                                        </RepeatButton.RenderTransform>
+                                    </RepeatButton>
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                    </StackPanel>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Items.Count}" Value="0">
+                            <Setter TargetName="RootPanel" Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ScrollArrows" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ClientManagerView:EventResourceDictionary>

@@ -1,0 +1,183 @@
+﻿<UserControl x:Class="FacebookClient.UpdateStatusControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:FacebookClient="clr-namespace:FacebookClient"
+    xmlns:ClientManager="clr-namespace:ClientManager;assembly=ClientManager" 
+    xmlns:ClientManagerControls="clr-namespace:ClientManager.Controls;assembly=ClientManager">
+    <UserControl.Template>
+        <ControlTemplate TargetType="{x:Type FacebookClient:UpdateStatusControl}">
+            <ControlTemplate.Resources>
+                <Style x:Key="GlowButtonStyle" TargetType="{x:Type ButtonBase}">
+                    <Setter Property="FontFamily" Value="{DynamicResource SansSerifFont}" />
+                    <Setter Property="FontSize" Value="12" />
+                    <Setter Property="Foreground" Value="White" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="Margin" Value="5"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ButtonBase}">
+                                <Border Background="#00FFFFFF">
+                                    <ContentPresenter/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect Color="White" BlurRadius="2" ShadowDepth="0" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+
+                <ControlTemplate x:Key="UpdateBoxAttachmentButtonTemplate" TargetType="{x:Type ButtonBase}">
+                    <Grid x:Name="Root">
+                        <TextBlock x:Name="Glow"
+                                  FontSize="11"
+                                  FontFamily="Segoe UI"
+                                  FontWeight="Semibold"
+                                  Text="{TemplateBinding Content}"
+                                  Foreground="White" Opacity="0">
+                                    <TextBlock.Effect>
+                                      <BlurEffect KernelType="Gaussian" Radius="8" />
+                                    </TextBlock.Effect>
+                        </TextBlock>
+                        <TextBlock x:Name="Main"
+                                      FontSize="11"
+                                      FontFamily="Segoe UI"
+                                      FontWeight="Semibold"
+                                      Text="{TemplateBinding Content}"
+                                      Foreground="White"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="Main" Value=".5" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" TargetName ="Glow" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" TargetName="Glow" Value="1" />
+                            <Setter Property="Opacity" TargetName="Main" Value="0.7" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+
+                <Style x:Key="UpdateBoxAttachmentButtonStyle" TargetType="{x:Type ButtonBase}">
+                    <Setter Property="Template" Value="{StaticResource UpdateBoxAttachmentButtonTemplate}" />
+                    <Setter Property="Focusable" Value="False" />
+                    <Setter Property="Cursor" Value="Hand" />
+                </Style>
+
+                <Style TargetType="Button" BasedOn="{StaticResource StandardButtonStyle}" x:Key="SubmitButtonStyle">
+                    <Setter Property="IsEnabled" Value="True" />
+                    <Setter Property="Height" Value="22"/>
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding ElementName=PART_ShareTextBox, Path=Text}" Value=""/>
+                                <!--<Condition Binding="{Binding ElementName=UpdateStatusControlRoot, Path=DisplayMode}" Value="Base"/>-->
+                            </MultiDataTrigger.Conditions>
+                            <Setter Property="IsEnabled" Value="False" />
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ControlTemplate.Resources>
+            <Border HorizontalAlignment="Center" x:Name="StatusBorder" Background="{DynamicResource UpdateStatusControlBrush}" BorderThickness="0" CornerRadius="8">
+                <!--<Border.Background>
+                    <SolidColorBrush Color="{DynamicResource UpdateStatusControlBrush}" Opacity="0"/>
+                </Border.Background>-->
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <FacebookClient:CommandTextBox Grid.Row="0" x:Name="PART_ShareTextBox" BannerText="What's on your mind?"
+                        Style="{StaticResource StatusTextBoxStyle}" HorizontalAlignment="Left" Margin="5"
+                        CommitCommand="{x:Static FacebookClient:UpdateStatusControl.UpdateStatusCommand}"/>
+
+                    <Border Grid.Row="1" Panel.ZIndex="1" x:Name="BottomPanel" BorderBrush="Transparent" BorderThickness="2,0,2,2" Margin="-2,-1,0,0" CornerRadius="0,0,8,8" 
+                            Visibility="Collapsed">
+                        <StackPanel>
+                            <Grid x:Name="AttachPanel"  Visibility="Visible" Opacity="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <DockPanel Grid.Row="0">
+                                    <Button DockPanel.Dock="Right" x:Name="ShareButton" Content="Share"
+                                            Command="{x:Static FacebookClient:UpdateStatusControl.UpdateStatusCommand}" VerticalAlignment="Bottom"
+                                            HorizontalAlignment="Right" Margin="0,3,8,5" Style="{StaticResource SubmitButtonStyle}"/>
+                                    <WrapPanel Orientation="Horizontal" DockPanel.Dock="Left" Margin="10,3">
+                                        <Button x:Name="LinkButton" Content="Attach Link" Margin="0,0,10,0" HorizontalAlignment="Left" 
+                                                Style="{StaticResource UpdateBoxAttachmentButtonStyle}" 
+                                                Focusable="False" Click="OnLinkButtonClick" VerticalAlignment="Center"/>
+                                        <Button x:Name="PhotoButton" Content="Attach Photo" Style="{StaticResource UpdateBoxAttachmentButtonStyle}" 
+                                                Focusable="False" VerticalAlignment="Center" Click="OnPhotoButtonClick"/>
+                                    </WrapPanel>
+                                </DockPanel>
+                                
+                                <StackPanel Grid.Row="1" x:Name="LinkModePanel" Visibility="Collapsed">
+                                    <FacebookClient:CommandTextBox x:Name="PART_LinkTextBox" Style="{StaticResource ApplicationBarShareTextBoxStyle}"
+                                            Margin="5" CommitCommand="{x:Static FacebookClient:UpdateStatusControl.UpdateStatusCommand}"
+                                            SpellCheck.IsEnabled="False" Tag="http://" />
+                                    <Button Content="Share" Command="{x:Static FacebookClient:UpdateStatusControl.UpdateStatusCommand}"
+                                            HorizontalAlignment="Right" Margin="0,5,8,5" Style="{StaticResource SubmitButtonStyle}"/>
+                                </StackPanel>
+
+                                <DockPanel Grid.Row="1" x:Name="PhotoModePanel" Visibility="Collapsed">
+                                    <Button DockPanel.Dock="Right" Content="Share" Command="{x:Static FacebookClient:UpdateStatusControl.UpdateStatusCommand}"
+                                            HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,5,8,5" Style="{StaticResource SubmitButtonStyle}"/>
+                                    <Image Grid.Row="1" x:Name="PART_PhotoImage" MaxHeight="100" HorizontalAlignment="Left" Margin="10"/>
+                                </DockPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="DisplayMode" Value="Link">
+                    <Setter TargetName="LinkModePanel" Property="Visibility" Value="Visible"/>
+                    <Setter TargetName="ShareButton" Property="Visibility" Value="Collapsed"/>
+                    <Setter TargetName="LinkButton" Property="Content" Value="Remove Link"/>
+                    <Setter TargetName="PhotoButton" Property="Visibility" Value="Collapsed"/> 
+                </Trigger>
+                <Trigger Property="DisplayMode" Value="Photo">
+                    <Setter TargetName="PhotoModePanel" Property="Visibility" Value="Visible"/>
+                    <Setter TargetName="ShareButton" Property="Visibility" Value="Collapsed"/>
+                    <Setter TargetName="LinkButton" Property="Visibility" Value="Collapsed"/>
+                    <Setter TargetName="PhotoButton" Property="Content" Value="Remove Photo"/>
+                </Trigger>
+                <Trigger Property="IsActive" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="StatusBorder" Storyboard.TargetProperty="(Border.Background).(Brush.Opacity)" To="1" Duration="0:0:1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="StatusBorder" Storyboard.TargetProperty="(Border.Background).(Brush.Opacity)" To="0" Duration="0:0:1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+
+                    <Setter TargetName="PART_ShareTextBox" Property="MinHeight" Value="38"/>
+                    <Setter TargetName="PART_ShareTextBox" Property="MaxHeight" Value="{x:Static System:Double.PositiveInfinity}"/>
+                    <Setter TargetName="BottomPanel" Property="Visibility" Value="Visible"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Template>
+
+</UserControl>

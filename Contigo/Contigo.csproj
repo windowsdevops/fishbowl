@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{92EF4985-F377-4707-B156-10A8D197B666}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Contigo</RootNamespace>
+    <AssemblyName>Contigo</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\FishbowlEtwInfo\Fishbowl.cs">
+      <Link>Logging\Fishbowl.cs</Link>
+    </Compile>
+    <Compile Include="..\Standard\ComGuids.cs">
+      <Link>Standard\ComGuids.cs</Link>
+    </Compile>
+    <Compile Include="..\Standard\Debug.cs">
+      <Link>Standard\Debug.cs</Link>
+    </Compile>
+    <Compile Include="..\Standard\Enumerable2.cs">
+      <Link>Standard\Enumerable2.cs</Link>
+    </Compile>
+    <Compile Include="..\Standard\ErrorCodes.cs">
+      <Link>Standard\ErrorCodes.cs</Link>
+    </Compile>
+    <Compile Include="..\Standard\MergeableCollection.cs">
+      <Link>Standard\MergeableCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Standard\NativeMethods.cs">
+      <Link>Standard\NativeMethods.cs</Link>
+    </Compile>
+    <Compile Include="..\Standard\ShellProvider.cs">
+      <Link>Standard\ShellProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\Standard\SmallString.cs">
+      <Link>Standard\SmallString.cs</Link>
+    </Compile>
+    <Compile Include="..\Standard\SmallUri.cs">
+      <Link>Standard\SmallUri.cs</Link>
+    </Compile>
+    <Compile Include="..\Standard\StreamHelper.cs">
+      <Link>Standard\StreamHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Standard\Utilities.cs">
+      <Link>Standard\Utilities.cs</Link>
+    </Compile>
+    <Compile Include="..\Standard\Verify.cs">
+      <Link>Standard\Verify.cs</Link>
+    </Compile>
+    <Compile Include="ActivityComment.cs" />
+    <Compile Include="ActivityFilter.cs" />
+    <Compile Include="ActivityPostAttachment.cs" />
+    <Compile Include="AsyncWebGetter.cs" />
+    <Compile Include="Collections\ActivityCommentCollection.cs" />
+    <Compile Include="Collections\ActivityPostCollection.cs" />
+    <Compile Include="Collections\FacebookContactCollection.cs" />
+    <Compile Include="Collections\FacebookPhotoAlbumCollection.cs" />
+    <Compile Include="Collections\FacebookPhotoCollection.cs" />
+    <Compile Include="Collections\FacebookPhotoTagCollection.cs" />
+    <Compile Include="DataSerialization.cs" />
+    <Compile Include="FacebookImage.cs" />
+    <Compile Include="FacebookImageLink.cs" />
+    <Compile Include="FacebookLoginService.cs" />
+    <Compile Include="FacebookPhotoTag.cs" />
+    <Compile Include="FacebookCollection.cs" />
+    <Compile Include="FacebookWebApi.cs" />
+    <Compile Include="GetImageSourceCompletedEventArgs.cs" />
+    <Compile Include="IFacebookObject.cs" />
+    <Compile Include="ActivityPost.cs" />
+    <Compile Include="Notification.cs" />
+    <Compile Include="SearchIndex.cs" />
+    <Compile Include="ServiceSettings.cs" />
+    <Compile Include="Stemmer.cs" />
+    <Compile Include="FacebookContact.cs" />
+    <Compile Include="FacebookException.cs" />
+    <Compile Include="FacebookPhoto.cs" />
+    <Compile Include="FacebookPhotoAlbum.cs" />
+    <Compile Include="FacebookService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DispatcherPool.cs" />
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Json\Microsoft.Json\Microsoft.Json.csproj">
+      <Project>{2E12ED56-6501-43A5-85C7-64255241D60E}</Project>
+      <Name>Microsoft.Json</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

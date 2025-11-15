@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REPL", "REPL\REPL.csproj", "{0ACACF6C-872F-4556-A9E8-00BF9B31195A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Json", "Microsoft.Json\Microsoft.Json.csproj", "{2E12ED56-6501-43A5-85C7-64255241D60E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{FD4B65AF-2E70-4296-916C-19FB1EF105A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{91F3C90B-B6CE-4068-AE37-39F155675B58}"
+	ProjectSection(SolutionItems) = preProject
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		Microsoft.Json.vsmdi = Microsoft.Json.vsmdi
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Junkyard", "Junkyard\Junkyard.csproj", "{00FAA1D4-F2F4-4E4D-A76C-4596734AC87D}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs04.codeplex.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = REPL\\REPL.csproj
+		SccProjectName1 = REPL
+		SccLocalPath1 = REPL
+		SccProjectUniqueName2 = Microsoft.Json\\Microsoft.Json.csproj
+		SccProjectName2 = Microsoft.Json
+		SccLocalPath2 = Microsoft.Json
+		SccProjectUniqueName3 = Tests\\Tests.csproj
+		SccProjectName3 = Tests
+		SccLocalPath3 = Tests
+		SccProjectUniqueName4 = Junkyard\\Junkyard.csproj
+		SccProjectName4 = Junkyard
+		SccLocalPath4 = Junkyard
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Microsoft.Json.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0ACACF6C-872F-4556-A9E8-00BF9B31195A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ACACF6C-872F-4556-A9E8-00BF9B31195A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ACACF6C-872F-4556-A9E8-00BF9B31195A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ACACF6C-872F-4556-A9E8-00BF9B31195A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E12ED56-6501-43A5-85C7-64255241D60E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E12ED56-6501-43A5-85C7-64255241D60E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E12ED56-6501-43A5-85C7-64255241D60E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E12ED56-6501-43A5-85C7-64255241D60E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD4B65AF-2E70-4296-916C-19FB1EF105A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD4B65AF-2E70-4296-916C-19FB1EF105A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD4B65AF-2E70-4296-916C-19FB1EF105A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD4B65AF-2E70-4296-916C-19FB1EF105A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00FAA1D4-F2F4-4E4D-A76C-4596734AC87D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00FAA1D4-F2F4-4E4D-A76C-4596734AC87D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00FAA1D4-F2F4-4E4D-A76C-4596734AC87D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00FAA1D4-F2F4-4E4D-A76C-4596734AC87D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

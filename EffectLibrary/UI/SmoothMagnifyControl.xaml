@@ -1,0 +1,35 @@
+﻿<EffectControls:EffectExpander
+    EffectName="Magnify" 
+ x:Class="EffectControls.SmoothMagnifyControl"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:EffectLibrary="clr-namespace:EffectLibrary;assembly=EffectLibrary"
+ xmlns:EffectControls="clr-namespace:EffectControls"
+ xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase">
+
+    <Expander.Content>
+        <StackPanel>
+
+            <TextBlock Foreground="{DynamicResource Foreground_ChromeText}" FontSize="15" FontFamily="Century Gothic" Text="Inner Radius"/>
+            <Slider Minimum="0" 
+                    Maximum="{Binding ElementName=OuterRadiusSlider, Path=Value, Mode=TwoWay}" 
+                    Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Expander}}, Mode=TwoWay, Path=TargetElement.Effect.(EffectLibrary:SmoothMagnifyEffect.InnerRadius)}">
+            </Slider>
+
+
+            <TextBlock Foreground="{DynamicResource Foreground_ChromeText}" FontSize="15" FontFamily="Century Gothic" Text="Magnification"/>
+            <Slider Minimum="1" Maximum="10" 
+                    Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Expander}}, Mode=TwoWay, Path=TargetElement.Effect.(EffectLibrary:SmoothMagnifyEffect.Magnification)}"/>
+
+
+            <TextBlock Foreground="{DynamicResource Foreground_ChromeText}" FontSize="15" FontFamily="Century Gothic" Text="Outer Radius"/>
+            <Slider Minimum="0" Maximum="1" 
+                    Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Expander}}, Mode=TwoWay, Path=TargetElement.Effect.(EffectLibrary:SmoothMagnifyEffect.OuterRadius)}" />
+
+        </StackPanel>
+
+    </Expander.Content>
+</EffectControls:EffectExpander>
+
+
+
